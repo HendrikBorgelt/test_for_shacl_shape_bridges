@@ -52,7 +52,7 @@ def preprocess_graph_data(graph_data):
 
 # Function to extract common entries between two dataframes based on a column label
 def get_common_entries(df, reference_df, reference_col):
-    return df[df['class_label'].isin(reference_df[reference_col])]
+    return df[df['label'].isin(reference_df[reference_col])]
 
 
 # Function to concatenate and deduplicate multiple dataframes
@@ -62,7 +62,7 @@ def concat_and_deduplicate(dfs_list):
 
 # Function to find entries specific to one dataframe compared to another
 def find_specific_entries(df, common_df):
-    return df[~df['class_label'].isin(common_df['class_label'])]
+    return df[~df['label'].isin(common_df['label'])]
 
 
 # Process common entries for shape_bridge_df
@@ -91,7 +91,7 @@ def process_and_compare_entries(classes_df, shape_bridge_df, shape_validation_df
     common_entries_sv = process_shape_validation(classes_df, shape_validation_df)
 
     # Find the intersection of common entries
-    common_entries = common_entries_sv[common_entries_sv['class_label'].isin(common_entries_sb['class_label'])]
+    common_entries = common_entries_sv[common_entries_sv['label'].isin(common_entries_sb['label'])]
 
     # Find unique entries specific to SV and SB
     sv_specific = find_specific_entries(common_entries_sv, common_entries)
@@ -398,203 +398,320 @@ def generate_shacl_prefix_block(prefixes):
     return shacl_prefix_block.strip()
 
 
-excel_file = "./SHARC_tests.xlsx"  # Replace with the actual file path
-df = pd.read_excel(excel_file, sheet_name=None)
-classes_df = df['Curies']
-shape_validation_df = df['Shape Validation']
-shape_bridge_df = df['Shape Bridge']
 
-# Process the raw data
-raw_graph_data = shape_bridge_df[['From', 'To', 'Relation', 'Target']].values.tolist()
-graph_data = preprocess_graph_data(raw_graph_data)
+# excel_file = "./SHARC_tests.xlsx"  # Replace with the actual file path
+# df = pd.read_excel(excel_file, sheet_name=None)
+# classes_df = df['Curies']
+# shape_validation_df = df['Shape Validation']
+# shape_bridge_df = df['Shape Bridge']
+#
+# # Process the raw data
+# raw_graph_data = shape_bridge_df[['From', 'To', 'Relation', 'Target']].values.tolist()
+# graph_data = preprocess_graph_data(raw_graph_data)
+#
+# # Create a directed graph
+# G = nx.DiGraph()
+#
+# # Add edges from graph_data, skip if "Target" is empty
+# for row in graph_data:
+#     from_node, to_node, relation, target_node = row
+#     if target_node != "":
+#         G.add_edge(to_node, target_node)
+#
+# # Find the longest path in the graph
+# longest_path = find_longest_path(G)
+#
+# # Create a directed graph
+# G_1 = nx.DiGraph()
+#
+# graph_data_1 = shape_validation_df[['subject_label', 'predicate_label', 'object_label']].values.tolist()
+# # Add edges from graph_data
+# for subject, predicate, obj in graph_data_1:
+#     G_1.add_edge(subject, obj, label=predicate)  # Add edges with the predicate as label
+#
+# # Find the longest path in the graph
+# longest_path_i1 = find_longest_path_1(G_1)
+#
+# mermaid_chart = """flowchart TD \n"""
+#
+# # Usage
+# common_entries_sb_2 = deepcopy(process_shape_bridge(classes_df, shape_bridge_df))
+# common_entries_sv_2 = deepcopy(process_shape_validation(classes_df, shape_validation_df))
+#
+# # Get the common entries and unique entries for shape_validation and shape_bridge
+# common_entries, sv_specific, sb_specific = process_and_compare_entries(classes_df, shape_bridge_df, shape_validation_df)
+#
+# for label, curie in zip(common_entries['label'], common_entries['curie']):
+#     mermaid_chart += f"    {curie}[{label}]\n"
+# for label, curie in zip(sv_specific['label'], sv_specific['curie']):
+#     mermaid_chart += f"    {curie}([{label}])\n"
+# for label, curie in zip(sb_specific['label'], sb_specific['curie']):
+#     mermaid_chart += f"    {curie}({label})\n"
+#
+# # Generate ShapeValidation section
+# mermaid_chart += "\n    subgraph ShapeValidation\n        subgraph CoreShapeInformation\n"
+# # find columns in shpaevalidation_df where both subject_label and object_label are in common_entries['label']
+# mermaid_chart_1 = ""
+# mermaid_chart_2 = ""
+# line_arrow = "-"*(len(longest_path))+">"
+# for subj, pred, obj in zip(shape_validation_df['subject_label'], shape_validation_df['predicate_label'], shape_validation_df['object_label']):
+#     subj_curie = classes_df[classes_df['label'] == subj]['curie'].values[0]
+#     obj_curie = classes_df[classes_df['label'] == obj]['curie'].values[0]
+#     if subj in common_entries['label'].values and obj in common_entries['label'].values:
+#         mermaid_chart_1 += f"        {subj_curie} ==>|{pred}| {obj_curie}\n"
+#     else:
+#         mermaid_chart_2 += f"    {subj_curie} {line_arrow}|{pred}| {obj_curie}\n"
+# mermaid_chart += mermaid_chart_1
+# mermaid_chart += "        end\n\n"
+# mermaid_chart += mermaid_chart_2
+# mermaid_chart += "    end\n\n"
+# mermaid_chart += "    subgraph TransformedGraph\n"
+#
+# temp_from = []
+# temp_to = []
+# temp_relation = []
+# temp_target = []
+# mermaid_chart_3 = ""
+# mermaid_chart_4 = ""
+# for from_node, to_node, relation, target in zip(shape_bridge_df['From'], shape_bridge_df['To'], shape_bridge_df['Relation'], shape_bridge_df['Target']):
+#     if not from_node == to_node:
+#         temp_from = from_node
+#         temp_to = to_node
+#         dotted_arrow = "-"+"."*(len(longest_path_i1)+len(longest_path)-1)+"->"
+#         mermaid_chart_4 += f"    {classes_df[classes_df['label'] == temp_from]['curie'].values[0]} {dotted_arrow}|SHACL_bridge| {classes_df[classes_df['label'] == temp_to]['curie'].values[0]}\n"
+#     if relation == target:
+#         continue
+#     mermaid_chart_3 += f"    {classes_df[classes_df['label'] == temp_to]['curie'].values[0]} -->|{relation}| {classes_df[classes_df['label'] == target]['curie'].values[0]}\n"
+#
+# mermaid_chart += mermaid_chart_3
+# mermaid_chart += "    end\n\n"
+# mermaid_chart += mermaid_chart_4
+#
+# # export the mermaid chart as a txt file
+# with open("./mermaid_chart.txt", "w") as f:
+#     f.write(mermaid_chart)
+Class_df = pd.DataFrame({'label': ['Process', 'ProcessStep', 'Input', 'InputSettings', 'ChemicalInvestigation', 'Setup', 'realizedOccurent', 'Specimen', 'Experiment', 'ExperimentSetup', 'Sample', 'Parameters'],
+                          'curie': ['ex:Process', 'ex:ProcessStep', 'ex:Input', 'ex:InputSettings', 'ex:ChemicalInvestigation', 'ex:Setup', 'ex:realizedOccurent', 'ex:Specimen', 'ex:Experiment', 'ex:ExperimentSetup', 'ex:Sample', 'ex:Parameters']
+                         })
+Relation_df = pd.DataFrame({'label': ['isSome', 'hasPart', 'isSome', 'describes', 'isInput', 'hasModifier', 'is_a', 'hasExperimentSetup', 'hasSample', 'performedWith', 'hasConcentrations'],
+                          'curie': ['ex:isSome', 'ex:hasPart', 'ex:isSome', 'ex:describes', 'ex:isInput', 'ex:hasModifier', 'ex:is_a', 'ex:hasExperimentSetup', 'ex:hasSample', 'ex:performedWith', 'ex:hasConcentrations']
+                           })
+shape_validation_df = pd.DataFrame({'subject_label':['Process', 'Process', 'Process', 'ProcessStep', 'Input', 'Input', 'Input'],
+                                    'predicate_label':['isSome', 'hasPart', 'isSome', 'describes', 'isInput', 'hasModifier', 'is_a'],
+                                    'object_label':['ChemicalInvestigation', 'ProcessStep', 'realizedOccurent', 'Setup', 'ProcessStep', 'InputSettings', 'Specimen']
+                                   })
+bridging_df = pd.DataFrame({'From':['Process', '-', 'ProcessStep', 'Input', 'InputSettings'],
+                            'To':['Experiment', '-', 'ExperimentSetup', 'Sample', 'Parameters'],
+                            'Relation':['hasExperimentSetup', 'hasSample', 'performedWith', 'hasConcentrations', '-'],
+                            'Target':['ExperimentSetup', 'Sample', 'Parameters', 'Parameters', '-']
+                           })
+def generate_mermaid_chart_from_dfs(classes_df,relations_df, shape_validation_df, shape_bridge_df):
+    # Load the data from the Excel
 
-# Create a directed graph
-G = nx.DiGraph()
+    # Process the raw data from shape bridge
+    raw_graph_data = shape_bridge_df[['From', 'To', 'Relation', 'Target']].values.tolist()
+    graph_data = preprocess_graph_data(raw_graph_data)  # Define this function based on your use case
 
-# Add edges from graph_data, skip if "Target" is empty
-for row in graph_data:
-    from_node, to_node, relation, target_node = row
-    if target_node != "":
-        G.add_edge(to_node, target_node)
+    # Create a directed graph for the bridge
+    G = nx.DiGraph()
 
-# Find the longest path in the graph
-longest_path = find_longest_path(G)
+    # Add edges from graph_data, skip if "Target" is empty
+    for row in graph_data:
+        from_node, to_node, relation, target_node = row
+        if target_node != "":
+            G.add_edge(to_node, target_node)
 
-# Create a directed graph
-G_1 = nx.DiGraph()
+    # Find the longest path in the graph
+    longest_path = find_longest_path(G)  # Ensure to define this function
 
-graph_data_1 = shape_validation_df[['subject_label', 'predicate_label', 'object_label']].values.tolist()
-# Add edges from graph_data
-for subject, predicate, obj in graph_data_1:
-    G_1.add_edge(subject, obj, label=predicate)  # Add edges with the predicate as label
+    # Create a directed graph for shape validation
+    G_1 = nx.DiGraph()
+    graph_data_1 = shape_validation_df[['subject_label', 'predicate_label', 'object_label']].values.tolist()
 
-# Find the longest path in the graph
-longest_path_i1 = find_longest_path_1(G_1)
+    # Add edges from graph_data_1
+    for subject, predicate, obj in graph_data_1:
+        G_1.add_edge(subject, obj, label=predicate)
 
-mermaid_chart = """flowchart TD \n"""
+    # Find the longest path in the validation graph
+    longest_path_i1 = find_longest_path_1(G_1)  # Ensure to define this function
 
-# Usage
-common_entries_sb_2 = deepcopy(process_shape_bridge(classes_df, shape_bridge_df))
-common_entries_sv_2 = deepcopy(process_shape_validation(classes_df, shape_validation_df))
+    # Initialize the Mermaid chart
+    mermaid_chart = """flowchart TD \n"""
 
-# Get the common entries and unique entries for shape_validation and shape_bridge
-common_entries, sv_specific, sb_specific = process_and_compare_entries(classes_df, shape_bridge_df, shape_validation_df)
+    # Process shape bridge and shape validation
+    common_entries_sb_2 = deepcopy(process_shape_bridge(classes_df, shape_bridge_df))
+    common_entries_sv_2 = deepcopy(process_shape_validation(classes_df, shape_validation_df))
 
-for class_label, class_curie in zip(common_entries['class_label'], common_entries['class_curie']):
-    mermaid_chart += f"    {class_curie}[{class_label}]\n"
-for class_label, class_curie in zip(sv_specific['class_label'], sv_specific['class_curie']):
-    mermaid_chart += f"    {class_curie}([{class_label}])\n"
-for class_label, class_curie in zip(sb_specific['class_label'], sb_specific['class_curie']):
-    mermaid_chart += f"    {class_curie}({class_label})\n"
+    # Get the common entries and unique entries for shape_validation and shape_bridge
+    common_entries, sv_specific, sb_specific = process_and_compare_entries(classes_df, shape_bridge_df,
+                                                                           shape_validation_df)
 
-# Generate ShapeValidation section
-mermaid_chart += "\n    subgraph ShapeValidation\n        subgraph CoreShapeInformation\n"
-# find columns in shpaevalidation_df where both subject_label and object_label are in common_entries['class_label']
-mermaid_chart_1 = ""
-mermaid_chart_2 = ""
-line_arrow = "-"*(len(longest_path))+">"
-for subj, pred, obj in zip(shape_validation_df['subject_label'], shape_validation_df['predicate_label'], shape_validation_df['object_label']):
-    subj_curie = classes_df[classes_df['class_label'] == subj]['class_curie'].values[0]
-    obj_curie = classes_df[classes_df['class_label'] == obj]['class_curie'].values[0]
-    if subj in common_entries['class_label'].values and obj in common_entries['class_label'].values:
-        mermaid_chart_1 += f"        {subj_curie} ==>|{pred}| {obj_curie}\n"
-    else:
-        mermaid_chart_2 += f"    {subj_curie} {line_arrow}|{pred}| {obj_curie}\n"
-mermaid_chart += mermaid_chart_1
-mermaid_chart += "        end\n\n"
-mermaid_chart += mermaid_chart_2
-mermaid_chart += "    end\n\n"
-mermaid_chart += "    subgraph TransformedGraph\n"
+    # Add class labels and Curies to the chart
+    for label, curie in zip(common_entries['label'], common_entries['curie']):
+        mermaid_chart += f"    {curie}[{label}]\n"
+    for label, curie in zip(sv_specific['label'], sv_specific['curie']):
+        mermaid_chart += f"    {curie}([{label}])\n"
+    for label, curie in zip(sb_specific['label'], sb_specific['curie']):
+        mermaid_chart += f"    {curie}({label})\n"
 
-temp_from = []
-temp_to = []
-temp_relation = []
-temp_target = []
-mermaid_chart_3 = ""
-mermaid_chart_4 = ""
-for from_node, to_node, relation, target in zip(shape_bridge_df['From'], shape_bridge_df['To'], shape_bridge_df['Relation'], shape_bridge_df['Target']):
-    if not from_node == to_node:
-        temp_from = from_node
-        temp_to = to_node
-        dotted_arrow = "-"+"."*(len(longest_path_i1)+len(longest_path)-1)+"->"
-        mermaid_chart_4 += f"    {classes_df[classes_df['class_label'] == temp_from]['class_curie'].values[0]} {dotted_arrow}|SHACL_bridge| {classes_df[classes_df['class_label'] == temp_to]['class_curie'].values[0]}\n"
-    if relation == target:
-        continue
-    mermaid_chart_3 += f"    {classes_df[classes_df['class_label'] == temp_to]['class_curie'].values[0]} -->|{relation}| {classes_df[classes_df['class_label'] == target]['class_curie'].values[0]}\n"
+    # Generate ShapeValidation section
+    mermaid_chart += "\n    subgraph ShapeValidation\n        subgraph CoreShapeInformation\n"
 
-mermaid_chart += mermaid_chart_3
-mermaid_chart += "    end\n\n"
-mermaid_chart += mermaid_chart_4
+    mermaid_chart_1 = ""
+    mermaid_chart_2 = ""
+    line_arrow = "-" * (len(longest_path)) + ">"
 
-# export the mermaid chart as a txt file
-with open("./mermaid_chart.txt", "w") as f:
-    f.write(mermaid_chart)
+    for subj, pred, obj in zip(shape_validation_df['subject_label'], shape_validation_df['predicate_label'],
+                               shape_validation_df['object_label']):
+        subj_curie = classes_df[classes_df['label'] == subj]['curie'].values[0]
+        obj_curie = classes_df[classes_df['label'] == obj]['curie'].values[0]
+        if subj in common_entries['label'].values and obj in common_entries['label'].values:
+            mermaid_chart_1 += f"        {subj_curie} ==>|{pred}| {obj_curie}\n"
+        else:
+            mermaid_chart_2 += f"    {subj_curie} {line_arrow}|{pred}| {obj_curie}\n"
+    mermaid_chart += mermaid_chart_1
+    mermaid_chart += "        end\n\n"
+    mermaid_chart += mermaid_chart_2
+    mermaid_chart += "    end\n\n"
 
-# Print the mermaid chart
+    # Generate TransformedGraph section
+    mermaid_chart += "    subgraph TransformedGraph\n"
+    mermaid_chart_3 = ""
+    mermaid_chart_4 = ""
+
+    for from_node, to_node, relation, target in zip(shape_bridge_df['From'], shape_bridge_df['To'],
+                                                    shape_bridge_df['Relation'], shape_bridge_df['Target']):
+        if not from_node == to_node:
+            temp_from = from_node
+            temp_to = to_node
+            dotted_arrow = "-" + "." * (len(longest_path_i1) + len(longest_path) - 1) + "->"
+            mermaid_chart_4 += f"    {classes_df[classes_df['label'] == temp_from]['curie'].values[0]} {dotted_arrow}|SHACL_bridge| {classes_df[classes_df['label'] == temp_to]['curie'].values[0]}\n"
+        if relation == target:
+            continue
+        mermaid_chart_3 += f"    {classes_df[classes_df['label'] == temp_to]['curie'].values[0]} -->|{relation}| {classes_df[classes_df['label'] == target]['curie'].values[0]}\n"
+
+    mermaid_chart += mermaid_chart_3
+    mermaid_chart += "    end\n\n"
+    mermaid_chart += mermaid_chart_4
+
+    # Export the mermaid chart to a text file
+    with open("./mermaid_chart.txt", "w") as f:
+        f.write(mermaid_chart)
+
+    markdown_version_of_mermaid_chart = f"```mermaid \n{mermaid_chart}```"
+
+    return mermaid_chart, markdown_version_of_mermaid_chart
+
+mermaid_chart, markdown_version_of_mermaid_chart = generate_mermaid_chart_from_dfs(Class_df, Relation_df, shape_validation_df, bridging_df)
 print(mermaid_chart)
-# Usage
-common_entries_sb_2 = deepcopy(process_shape_bridge(classes_df, shape_bridge_df))
-common_entries_sv_2 = deepcopy(process_shape_validation(classes_df, shape_validation_df))
-# Get the common entries and unique entries for shape_validation and shape_bridge
-common_entries, sv_specific, sb_specific = process_and_compare_entries(classes_df, shape_bridge_df, shape_validation_df)
-# create a df from the shape_validation_df where only columns with common entries are selected
-common_entries_2 = common_entries['class_label']
-common_entries_2 = common_entries_2.to_list()
-shape_validation_df_common = shape_validation_df[shape_validation_df['subject_label'].isin(common_entries_2) & shape_validation_df['object_label'].isin(common_entries_2)]
-# Usage
-process_graph_centrality(shape_validation_df_common)
-# Create a directed graph using networkx
-G = nx.DiGraph()
 
-# Add nodes and edges from the DataFrame
-for index, row in shape_validation_df.iterrows():
-    subject = row['subject_label']
-    predicate = row['predicate_label']
-    obj = row['object_label']
+def generate_shafe_from_dfs(classes_df,relations_df, shape_validation_df, shape_bridge_df):
+    # Usage
+    common_entries_sb_2 = deepcopy(process_shape_bridge(classes_df, shape_bridge_df))
+    common_entries_sv_2 = deepcopy(process_shape_validation(classes_df, shape_validation_df))
+    # Get the common entries and unique entries for shape_validation and shape_bridge
+    common_entries, sv_specific, sb_specific = process_and_compare_entries(classes_df, shape_bridge_df, shape_validation_df)
+    # create a df from the shape_validation_df where only columns with common entries are selected
+    common_entries_2 = common_entries['label']
+    common_entries_2 = common_entries_2.to_list()
+    shape_validation_df_common = shape_validation_df[shape_validation_df['subject_label'].isin(common_entries_2) & shape_validation_df['object_label'].isin(common_entries_2)]
+    # Usage
+    process_graph_centrality(shape_validation_df_common)
+    # Create a directed graph using networkx
+    G = nx.DiGraph()
 
-    # Add edge to the graph (directed from subject to object)
-    G.add_edge(subject, obj, predicate=predicate)
+    # Add nodes and edges from the DataFrame
+    for index, row in shape_validation_df.iterrows():
+        subject = row['subject_label']
+        predicate = row['predicate_label']
+        obj = row['object_label']
 
-# SHACL template to start with
-shacl_template = """
-@prefix : <http://example.org/ontology#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+        # Add edge to the graph (directed from subject to object)
+        G.add_edge(subject, obj, predicate=predicate)
 
-:BridgeValidationSHAPE
-    a sh:NodeShape ;
-    sh:targetClass :Input ;  # The shape targets the Input class
-"""
-# Generate the SHACL shapes from the graph analysis starting from 'Input'
-shacl_shapes = generate_nested_shacl(G, 'Input')
-# Final SHACL shape with template and generated properties
-final_shacl = shacl_template + shacl_shapes
+    # SHACL template to start with
+    shacl_template = """
+    @prefix : <http://example.org/ontology#> .
+    @prefix sh: <http://www.w3.org/ns/shacl#> .
+    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+    
+    :BridgeValidationSHAPE
+        a sh:NodeShape ;
+        sh:targetClass :Input ;  # The shape targets the Input class
+    """
+    # Generate the SHACL shapes from the graph analysis starting from 'Input'
+    shacl_shapes = generate_nested_shacl(G, 'Input')
+    # Final SHACL shape with template and generated properties
+    final_shacl = shacl_template + shacl_shapes
 
-# Generate the text from the dataframe
-generated_text = sparql_query_text_from_dataframes(shape_bridge_df,shape_validation_df_common)
+    # Generate the text from the dataframe
+    generated_text = sparql_query_text_from_dataframes(shape_bridge_df,shape_validation_df_common)
 
-# Example SPARQL query
-sparql_query = """
-PREFIX ex: <http://example.org/ontology#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-CONSTRUCT {
-    ?variable_e a ex:Experiment.
-    ?variable_f a ex:ExperimentSetup.
-    ?variable_g a ex:Sample.
-    ?variable_h a ex:Parameters.
-    ?variable_e ex:hasExperimentSetup ?variable_f.
-    ?variable_e ex:hasSample ?variable_g.
-    ?variable_f ex:performedWith ?variable_h.
-    ?variable_g ex:hasConcentrations ?variable_h.
-} 
-WHERE {
-    ?variable_a a ex:Process.
-    ?variable_b a ex:ProcessStep.
-    ?variable_c a ex:Input.
-    ?variable_d a ex:InputSettings.
-}
-"""
-# prefixes = extract_prefixes_from_sparql(generated_text)
-# shacl_prefix_block = generate_shacl_prefix_block(prefixes)
-shacl_rule = f"""
-# SPARQL-based validation using sh:sparql
-sh:rule [
-    a sh:SPARQLRule ;
-    sh:prefixes [
-        sh:declare [
-            sh:prefix "ex" ;
-            sh:namespace "http://example.org/ontology#" ;
+    # Example SPARQL query
+    sparql_query = """
+    PREFIX ex: <http://example.org/ontology#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    
+    CONSTRUCT {
+        ?variable_e a ex:Experiment.
+        ?variable_f a ex:ExperimentSetup.
+        ?variable_g a ex:Sample.
+        ?variable_h a ex:Parameters.
+        ?variable_e ex:hasExperimentSetup ?variable_f.
+        ?variable_e ex:hasSample ?variable_g.
+        ?variable_f ex:performedWith ?variable_h.
+        ?variable_g ex:hasConcentrations ?variable_h.
+    } 
+    WHERE {
+        ?variable_a a ex:Process.
+        ?variable_b a ex:ProcessStep.
+        ?variable_c a ex:Input.
+        ?variable_d a ex:InputSettings.
+    }
+    """
+    # prefixes = extract_prefixes_from_sparql(generated_text)
+    # shacl_prefix_block = generate_shacl_prefix_block(prefixes)
+    shacl_rule = f"""
+    # SPARQL-based validation using sh:sparql
+    sh:rule [
+        a sh:SPARQLRule ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "ex" ;
+                sh:namespace "http://example.org/ontology#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "rdf" ;
+                sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "rdfs" ;
+                sh:namespace "http://www.w3.org/2000/01/rdf-schema#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "xsd" ;
+                sh:namespace "http://www.w3.org/2001/XMLSchema#" ;
+            ] ;
         ] ;
-        sh:declare [
-            sh:prefix "rdf" ;
-            sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" ;
+        sh:message "SPARQL rule for Input and associated properties." ;
+        sh:construct \"\"\"\n
+        {generated_text}\"\"\" ;
         ] ;
-        sh:declare [
-            sh:prefix "rdfs" ;
-            sh:namespace "http://www.w3.org/2000/01/rdf-schema#" ;
-        ] ;
-        sh:declare [
-            sh:prefix "xsd" ;
-            sh:namespace "http://www.w3.org/2001/XMLSchema#" ;
-        ] ;
-    ] ;
-    sh:message "SPARQL rule for Input and associated properties." ;
-    sh:construct \"\"\"\n
-    {generated_text}\"\"\" ;
-    ] ;
-.
-"""
+    .
+    """
 
-final_shacl_2 = final_shacl + shacl_rule
-# Save to a file (if needed)
-with open('./shacl_validation_2.ttl', 'w') as f:
-    f.write(final_shacl_2)
+    final_shacl_2 = final_shacl + shacl_rule
+    # Save to a file (if needed)
+    with open('./shacl_validation_2.ttl', 'w') as f:
+        f.write(final_shacl_2)
 
+    return final_shacl_2
+
+final_shacl_2 = generate_shafe_from_dfs(Class_df, Relation_df, shape_validation_df, bridging_df)
 
 def gen_dif_and_ext_graph(data_g, shape_g):
     val_0 = Validator(data_g, options={"advanced": True, "inference": "rdfs"})
