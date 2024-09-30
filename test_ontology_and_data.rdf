@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#">
+
+    <!-- Define classes -->
+    <owl:Class rdf:about="#Process"/>
+    <owl:Class rdf:about="#ProcessStep"/>
+    <owl:Class rdf:about="#Input"/>
+    <owl:Class rdf:about="#Setup"/>
+    <owl:Class rdf:about="#InputSettings"/>
+    <owl:Class rdf:about="#Specimen"/>
+    <owl:Class rdf:about="#ChemicalInvestigation"/>
+    <owl:Class rdf:about="#realizedOccurent"/>
+    
+    <!-- Dummy classes -->
+    <owl:Class rdf:about="#Experiment"/>
+    <owl:Class rdf:about="#Procedure"/>
+    <owl:Class rdf:about="#Tool"/>
+    <owl:Class rdf:about="#Measurement"/>
+
+    <!-- Define properties -->
+    <owl:ObjectProperty rdf:about="#isSome">
+        <rdfs:domain rdf:resource="#Process"/>
+        <rdfs:range rdf:resource="#ChemicalInvestigation"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#hasPart">
+        <rdfs:domain rdf:resource="#Process"/>
+        <rdfs:range rdf:resource="#ProcessStep"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#describes">
+        <rdfs:domain rdf:resource="#ProcessStep"/>
+        <rdfs:range rdf:resource="#Setup"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#isInput">
+        <rdfs:domain rdf:resource="#Input"/>
+        <rdfs:range rdf:resource="#ProcessStep"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#hasModifier">
+        <rdfs:domain rdf:resource="#Input"/>
+        <rdfs:range rdf:resource="#InputSettings"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#is_a">
+        <rdfs:domain rdf:resource="#Input"/>
+        <rdfs:range rdf:resource="#Specimen"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#realizedOccurent">
+        <rdfs:domain rdf:resource="#Process"/>
+        <rdfs:range rdf:resource="#realizedOccurent"/>
+    </owl:ObjectProperty>
+
+    <!-- Dummy properties -->
+    <owl:ObjectProperty rdf:about="#hasProcedure">
+        <rdfs:domain rdf:resource="#Experiment"/>
+        <rdfs:range rdf:resource="#Procedure"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#usesTool">
+        <rdfs:domain rdf:resource="#Procedure"/>
+        <rdfs:range rdf:resource="#Tool"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#measures">
+        <rdfs:domain rdf:resource="#Procedure"/>
+        <rdfs:range rdf:resource="#Measurement"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#isPartOf">
+        <rdfs:domain rdf:resource="#Measurement"/>
+        <rdfs:range rdf:resource="#Tool"/>
+    </owl:ObjectProperty>
+	
+	 <!-- Define individuals for core classes -->
+    <!-- Processes -->
+    <rdf:Description rdf:about="#Process1">
+        <rdf:type rdf:resource="#Process"/>
+        <owl:ObjectProperty rdf:resource="#isSome" rdf:resource="#ChemicalInvestigation1"/>
+        <owl:ObjectProperty rdf:resource="#hasPart" rdf:resource="#ProcessStep1"/>
+        <owl:ObjectProperty rdf:resource="#realizedOccurent" rdf:resource="#realizedOccurent1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Process2">
+        <rdf:type rdf:resource="#Process"/>
+        <owl:ObjectProperty rdf:resource="#isSome" rdf:resource="#ChemicalInvestigation2"/>
+        <owl:ObjectProperty rdf:resource="#hasPart" rdf:resource="#ProcessStep2"/>
+        <owl:ObjectProperty rdf:resource="#realizedOccurent" rdf:resource="#realizedOccurent2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Process3">
+        <rdf:type rdf:resource="#Process"/>
+        <owl:ObjectProperty rdf:resource="#isSome" rdf:resource="#ChemicalInvestigation3"/>
+        <owl:ObjectProperty rdf:resource="#hasPart" rdf:resource="#ProcessStep3"/>
+        <owl:ObjectProperty rdf:resource="#realizedOccurent" rdf:resource="#realizedOccurent3"/>
+    </rdf:Description>
+
+    <!-- Process Steps -->
+    <rdf:Description rdf:about="#ProcessStep1">
+        <rdf:type rdf:resource="#ProcessStep"/>
+        <owl:ObjectProperty rdf:resource="#describes" rdf:resource="#Setup1"/>
+        <owl:ObjectProperty rdf:resource="#isInput" rdf:resource="#Input1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ProcessStep2">
+        <rdf:type rdf:resource="#ProcessStep"/>
+        <owl:ObjectProperty rdf:resource="#describes" rdf:resource="#Setup2"/>
+        <owl:ObjectProperty rdf:resource="#isInput" rdf:resource="#Input2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ProcessStep3">
+        <rdf:type rdf:resource="#ProcessStep"/>
+        <owl:ObjectProperty rdf:resource="#describes" rdf:resource="#Setup3"/>
+        <owl:ObjectProperty rdf:resource="#isInput" rdf:resource="#Input3"/>
+    </rdf:Description>
+
+    <!-- Inputs -->
+    <rdf:Description rdf:about="#Input1">
+        <rdf:type rdf:resource="#Input"/>
+        <owl:ObjectProperty rdf:resource="#hasModifier" rdf:resource="#InputSettings1"/>
+        <owl:ObjectProperty rdf:resource="#is_a" rdf:resource="#Specimen1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Input2">
+        <rdf:type rdf:resource="#Input"/>
+        <owl:ObjectProperty rdf:resource="#hasModifier" rdf:resource="#InputSettings2"/>
+        <owl:ObjectProperty rdf:resource="#is_a" rdf:resource="#Specimen2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Input3">
+        <rdf:type rdf:resource="#Input"/>
+        <owl:ObjectProperty rdf:resource="#hasModifier" rdf:resource="#InputSettings3"/>
+        <owl:ObjectProperty rdf:resource="#is_a" rdf:resource="#Specimen3"/>
+    </rdf:Description>
+
+    <!-- Dummy Classes Instances -->
+    <!-- Experiments -->
+    <rdf:Description rdf:about="#Experiment1">
+        <rdf:type rdf:resource="#Experiment"/>
+        <owl:ObjectProperty rdf:resource="#hasProcedure" rdf:resource="#Procedure1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Experiment2">
+        <rdf:type rdf:resource="#Experiment"/>
+        <owl:ObjectProperty rdf:resource="#hasProcedure" rdf:resource="#Procedure2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Experiment3">
+        <rdf:type rdf:resource="#Experiment"/>
+        <owl:ObjectProperty rdf:resource="#hasProcedure" rdf:resource="#Procedure3"/>
+    </rdf:Description>
+
+    <!-- Procedures -->
+    <rdf:Description rdf:about="#Procedure1">
+        <rdf:type rdf:resource="#Procedure"/>
+        <owl:ObjectProperty rdf:resource="#usesTool" rdf:resource="#Tool1"/>
+        <owl:ObjectProperty rdf:resource="#measures" rdf:resource="#Measurement1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Procedure2">
+        <rdf:type rdf:resource="#Procedure"/>
+        <owl:ObjectProperty rdf:resource="#usesTool" rdf:resource="#Tool2"/>
+        <owl:ObjectProperty rdf:resource="#measures" rdf:resource="#Measurement2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Procedure3">
+        <rdf:type rdf:resource="#Procedure"/>
+        <owl:ObjectProperty rdf:resource="#usesTool" rdf:resource="#Tool3"/>
+        <owl:ObjectProperty rdf:resource="#measures" rdf:resource="#Measurement3"/>
+    </rdf:Description>
+
+    <!-- Tools -->
+    <rdf:Description rdf:about="#Tool1">
+        <rdf:type rdf:resource="#Tool"/>
+        <owl:ObjectProperty rdf:resource="#isPartOf" rdf:resource="#Measurement1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Tool2">
+        <rdf:type rdf:resource="#Tool"/>
+        <owl:ObjectProperty rdf:resource="#isPartOf" rdf:resource="#Measurement2"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Tool3">
+        <rdf:type rdf:resource="#Tool"/>
+        <owl:ObjectProperty rdf:resource="#isPartOf" rdf:resource="#Measurement3"/>
+    </rdf:Description>
+
+    <!-- Measurements -->
+    <rdf:Description rdf:about="#Measurement1">
+        <rdf:type rdf:resource="#Measurement"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Measurement2">
+        <rdf:type rdf:resource="#Measurement"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Measurement3">
+        <rdf:type rdf:resource="#Measurement"/>
+    </rdf:Description>
+
+    <!-- Setup -->
+    <rdf:Description rdf:about="#Setup1">
+        <rdf:type rdf:resource="#Setup"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Setup2">
+        <rdf:type rdf:resource="#Setup"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Setup3">
+        <rdf:type rdf:resource="#Setup"/>
+    </rdf:Description>
+
+    <!-- Input Settings -->
+    <rdf:Description rdf:about="#InputSettings1">
+        <rdf:type rdf:resource="#InputSettings"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#InputSettings2">
+        <rdf:type rdf:resource="#InputSettings"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#InputSettings3">
+        <rdf:type rdf:resource="#InputSettings"/>
+    </rdf:Description>
+
+    <!-- Specimens -->
+    <rdf:Description rdf:about="#Specimen1">
+        <rdf:type rdf:resource="#Specimen"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Specimen2">
+        <rdf:type rdf:resource="#Specimen"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#Specimen3">
+        <rdf:type rdf:resource="#Specimen"/>
+    </rdf:Description>
+
+    <!-- Chemical Investigations -->
+    <rdf:Description rdf:about="#ChemicalInvestigation1">
+        <rdf:type rdf:resource="#ChemicalInvestigation"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ChemicalInvestigation2">
+        <rdf:type rdf:resource="#ChemicalInvestigation"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ChemicalInvestigation3">
+        <rdf:type rdf:resource="#ChemicalInvestigation"/>
+    </rdf:Description>
+
+    <!-- Realized Occurents -->
+    <rdf:Description rdf:about="#realizedOccurent1">
+        <rdf:type rdf:resource="#realizedOccurent"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#realizedOccurent2">
+        <rdf:type rdf:resource="#realizedOccurent"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#realizedOccurent3">
+        <rdf:type rdf:resource="#realizedOccurent"/>
+    </rdf:Description>
+
+
+</rdf:RDF>

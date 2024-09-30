@@ -1,0 +1,55 @@
+@prefix : <http://example.org/ontology#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+:Input a rdfs:Class .
+:ProcessStep a rdfs:Class .
+:Setup a rdfs:Class .
+:InputSettings a rdfs:Class .
+:Specimen a rdfs:Class .
+:Process a rdfs:Class .
+:Experiment a rdfs:Class .
+:ExperimentSetup a rdfs:Class .
+:Sample a rdfs:Class .
+:Parameters a rdfs:Class .
+
+# Individuals
+:input1 a :Input ;
+    :isInput :processStep1 ;
+    :hasModifier :inputSettings1 ;
+    :is_a :specimen1 .
+
+:processStep1 a :ProcessStep ;
+    :describes :setup1 .
+
+:setup1 a :Setup .
+
+:inputSettings1 a :InputSettings .
+
+:specimen1 a :Specimen .
+
+:process1 a :Process ;
+    :hasExperimentSetup :experimentSetup1 ;
+    :hasSample :sample1 .
+
+:experimentSetup1 a :ExperimentSetup ;
+    :performedWith :parameters1 .
+
+:sample1 a :Sample ;
+    :hasConcentrations :parameters1 .
+
+:parameters1 a :Parameters .
+
+# SPARQL-based validation
+:process1 rdf:type :Process ;
+    :hasExperimentSetup :experimentSetup1 ;
+    :hasSample :sample1 .
+
+:experimentSetup1 rdf:type :ExperimentSetup ;
+    :performedWith :parameters1 .
+
+:sample1 rdf:type :Sample ;
+    :hasConcentrations :parameters1 .

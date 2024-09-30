@@ -1,0 +1,94 @@
+@prefix : <http://example.org/ontology#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+:BridgeValidationSHAPE
+    a sh:NodeShape ;
+    sh:targetClass :Input ;  # The shape targets the Input class
+    # Validation for Input - isInput - ProcessStep
+    sh:property [
+        sh:path :isInput ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:class :ProcessStep ;
+            # Nested validation for ProcessStep
+    # Validation for ProcessStep - describes - Setup
+    sh:property [
+        sh:path :describes ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:class :Setup ;
+        ] ;
+        sh:message "ProcessStep must have a describes property pointing to a Setup." ;
+    ] ;
+        ] ;
+        sh:message "Input must have a isInput property pointing to a ProcessStep." ;
+    ] ;
+    # Validation for Input - hasModifier - InputSettings
+    sh:property [
+        sh:path :hasModifier ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:class :InputSettings ;
+        ] ;
+        sh:message "Input must have a hasModifier property pointing to a InputSettings." ;
+    ] ;
+    # Validation for Input - is_a - Specimen
+    sh:property [
+        sh:path :is_a ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:class :Specimen ;
+        ] ;
+        sh:message "Input must have a is_a property pointing to a Specimen." ;
+    ] ;
+	# SPARQL-based validation using sh:sparql
+	sh:rule [
+    a sh:SPARQLRule ;
+    sh:prefixes [
+        sh:declare [
+            sh:prefix "ex" ;
+            sh:namespace "http://example.org/ontology#" ;
+        ] ;
+        sh:declare [
+            sh:prefix "rdf" ;
+            sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" ;
+        ] ;
+        sh:declare [
+            sh:prefix "rdfs" ;
+            sh:namespace "http://www.w3.org/2000/01/rdf-schema#" ;
+        ] ;
+        sh:declare [
+            sh:prefix "xsd" ;
+            sh:namespace "http://www.w3.org/2001/XMLSchema#" ;
+        ] ;
+    ] ;
+    sh:message "SPARQL rule for Input and associated properties." ;
+    sh:construct """
+    CONSTRUCT {
+		?variable_a rdf:type ex:Experiment.
+		?variable_b rdf:type ex:ExperimentSetup.
+		?variable_c rdf:type ex:Sample.
+		?variable_d rdf:type ex:Parameters.
+		?variable_a ex:hasExperimentSetup ?variable_b.
+		?variable_a ex:hasSample ?variable_c.
+		?variable_b ex:performedWith ?variable_d.
+		?variable_c ex:hasConcentrations ?variable_d.
+	} 
+	WHERE {
+		?variable_a rdf:type ex:Process.
+		?variable_b rdf:type ex:ProcessStep.
+		?variable_c rdf:type ex:Input.
+		?variable_d rdf:type ex:InputSettings.
+		
+		FILTER EXISTS {
+			?variable_c ex:isInput ?variable_b .  # Ensure input is linked to a process step
+		}
+		FILTER EXISTS {
+			?variable_c ex:hasModifier ?variable_d .  # Ensure input has modifier
+		}
+	}""" ;
+    ] ;
+.

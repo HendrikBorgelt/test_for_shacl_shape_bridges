@@ -1,0 +1,48 @@
+@prefix ex: <http://example.org/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+ex:Process a rdf:Class .
+ex:ProcessStep a rdf:Class .
+ex:Input a rdf:Class .
+ex:Setup a rdf:Class .
+ex:InputSettings a rdf:Class .
+ex:Specimen a rdf:Class .
+ex:Experiment a rdf:Class .
+ex:ExperimentSetup a rdf:Class .
+ex:Sample a rdf:Class .
+ex:Parameters a rdf:Class .
+
+# Object Properties
+ex:isInput a rdf:Property ;
+    rdfs:domain ex:Input ;
+    rdfs:range ex:ProcessStep .
+
+ex:describes a rdf:Property ;
+    rdfs:domain ex:ProcessStep ;
+    rdfs:range ex:Setup .
+
+ex:hasModifier a rdf:Property ;
+    rdfs:domain ex:Input ;
+    rdfs:range ex:InputSettings .
+
+ex:is_a a rdf:Property ;
+    rdfs:domain ex:Input ;
+    rdfs:range ex:Specimen .
+
+# Instances
+ex:Process1 a ex:Process .
+ex:ProcessStep1 a ex:ProcessStep ;
+    ex:describes ex:Setup1 ;
+    ex:isInput ex:Input1 .
+
+ex:Input1 a ex:Input ;
+    ex:hasModifier ex:InputSettings1 ;
+    ex:is_a ex:Specimen1 .
+
+ex:InputSettings1 a ex:InputSettings .
+
+ex:Setup1 a ex:Setup .
+ex:Specimen1 a ex:Specimen .

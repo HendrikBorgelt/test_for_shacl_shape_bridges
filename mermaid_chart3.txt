@@ -1,0 +1,30 @@
+flowchart TD 
+    A1[Process]
+    A2[ProcessStep]
+    A3[Input]
+    A4[InputSettings]
+    B1(Experiment)
+    B2(ExperimentSetup)
+    B3(Sample)
+    B4(Parameters)
+
+    subgraph ShapeValidation
+        subgraph CoreShapeInformation
+        A1 ==>|hasPart| A2
+        A2 ==>|hasInput| A3
+        A3 ==>|hasModifier| A4
+        end
+
+    end
+
+    subgraph TransformedGraph
+    B1 -->|hasExperimentSetup| B2
+    B1 -->|hasSample| B3
+    B2 -->|performedWith| B4
+    B3 -->|hasConcentrations| B4
+    end
+
+    A1 -......->|SHACL_bridge| B1
+    A2 -......->|SHACL_bridge| B2
+    A3 -......->|SHACL_bridge| B3
+    A4 -......->|SHACL_bridge| B4

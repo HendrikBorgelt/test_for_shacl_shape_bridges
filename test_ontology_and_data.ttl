@@ -1,0 +1,173 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://example.org/ontology#> .
+
+# Classes
+:Process a owl:Class .
+:ProcessStep a owl:Class .
+:Input a owl:Class .
+:Setup a owl:Class .
+:InputSettings a owl:Class .
+:Specimen a owl:Class .
+:ChemicalInvestigation a owl:Class .
+:realizedOccurent a owl:Class .
+
+# Dummy Classes
+:Experiment a owl:Class .
+:Procedure a owl:Class .
+:Tool a owl:Class .
+:Measurement a owl:Class .
+
+# Object Properties
+:isSome a owl:ObjectProperty ;
+    rdfs:domain :Process ;
+    rdfs:range :ChemicalInvestigation .
+
+:hasPart a owl:ObjectProperty ;
+    rdfs:domain :Process ;
+    rdfs:range :ProcessStep .
+
+:describes a owl:ObjectProperty ;
+    rdfs:domain :ProcessStep ;
+    rdfs:range :Setup .
+
+:isInput a owl:ObjectProperty ;
+    rdfs:domain :Input ;
+    rdfs:range :ProcessStep .
+
+:hasModifier a owl:ObjectProperty ;
+    rdfs:domain :Input ;
+    rdfs:range :InputSettings .
+
+:is_a a owl:ObjectProperty ;
+    rdfs:domain :Input ;
+    rdfs:range :Specimen .
+
+:realizedOccurent a owl:ObjectProperty ;
+    rdfs:domain :Process ;
+    rdfs:range :realizedOccurent .
+
+# Dummy Properties
+:hasProcedure a owl:ObjectProperty ;
+    rdfs:domain :Experiment ;
+    rdfs:range :Procedure .
+
+:usesTool a owl:ObjectProperty ;
+    rdfs:domain :Procedure ;
+    rdfs:range :Tool .
+
+:measures a owl:ObjectProperty ;
+    rdfs:domain :Procedure ;
+    rdfs:range :Measurement .
+
+:isPartOf a owl:ObjectProperty ;
+    rdfs:domain :Measurement ;
+    rdfs:range :Tool .
+
+# Individuals
+
+# Processes
+:Process1 a :Process ;
+    :isSome :ChemicalInvestigation1 ;
+    :hasPart :ProcessStep1 ;
+    :realizedOccurent :realizedOccurent1 .
+
+:Process2 a :Process ;
+    :isSome :ChemicalInvestigation2 ;
+    :hasPart :ProcessStep2 ;
+    :realizedOccurent :realizedOccurent2 .
+
+:Process3 a :Process ;
+    :isSome :ChemicalInvestigation3 ;
+    :hasPart :ProcessStep3 ;
+    :realizedOccurent :realizedOccurent3 .
+
+# Process Steps
+:ProcessStep1 a :ProcessStep ;
+    :describes :Setup1 ;
+    :isInput :Input1 .
+
+:ProcessStep2 a :ProcessStep ;
+    :describes :Setup2 ;
+    :isInput :Input2 .
+
+:ProcessStep3 a :ProcessStep ;
+    :describes :Setup3 ;
+    :isInput :Input3 .
+
+# Inputs
+:Input1 a :Input ;
+    :hasModifier :InputSettings1 ;
+    :is_a :Specimen1 .
+
+:Input2 a :Input ;
+    :hasModifier :InputSettings2 ;
+    :is_a :Specimen2 .
+
+:Input3 a :Input ;
+    :hasModifier :InputSettings3 ;
+    :is_a :Specimen3 .
+
+# Experiments
+:Experiment1 a :Experiment ;
+    :hasProcedure :Procedure1 .
+
+:Experiment2 a :Experiment ;
+    :hasProcedure :Procedure2 .
+
+:Experiment3 a :Experiment ;
+    :hasProcedure :Procedure3 .
+
+# Procedures
+:Procedure1 a :Procedure ;
+    :usesTool :Tool1 ;
+    :measures :Measurement1 .
+
+:Procedure2 a :Procedure ;
+    :usesTool :Tool2 ;
+    :measures :Measurement2 .
+
+:Procedure3 a :Procedure ;
+    :usesTool :Tool3 ;
+    :measures :Measurement3 .
+
+# Tools
+:Tool1 a :Tool ;
+    :isPartOf :Measurement1 .
+
+:Tool2 a :Tool ;
+    :isPartOf :Measurement2 .
+
+:Tool3 a :Tool ;
+    :isPartOf :Measurement3 .
+
+# Measurements
+:Measurement1 a :Measurement .
+:Measurement2 a :Measurement .
+:Measurement3 a :Measurement .
+
+# Setups
+:Setup1 a :Setup .
+:Setup2 a :Setup .
+:Setup3 a :Setup .
+
+# Input Settings
+:InputSettings1 a :InputSettings .
+:InputSettings2 a :InputSettings .
+:InputSettings3 a :InputSettings .
+
+# Specimens
+:Specimen1 a :Specimen .
+:Specimen2 a :Specimen .
+:Specimen3 a :Specimen .
+
+# Chemical Investigations
+:ChemicalInvestigation1 a :ChemicalInvestigation .
+:ChemicalInvestigation2 a :ChemicalInvestigation .
+:ChemicalInvestigation3 a :ChemicalInvestigation .
+
+# Realized Occurents
+:realizedOccurent1 a :realizedOccurent .
+:realizedOccurent2 a :realizedOccurent .
+:realizedOccurent3 a :realizedOccurent .

@@ -1,0 +1,237 @@
+@prefix : <http://example.org/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Experiment a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Experiment,
+        rdfs:Resource .
+
+:Input a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Input,
+        rdfs:Resource .
+
+:InputSettings a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :InputSettings,
+        rdfs:Resource .
+
+:Parameters a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Parameters,
+        rdfs:Resource .
+
+:Process a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Process,
+        rdfs:Resource .
+
+:ProcessStep a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :ProcessStep,
+        rdfs:Resource .
+
+:Sample a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Sample,
+        rdfs:Resource .
+
+:Setup a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Setup,
+        rdfs:Resource .
+
+:Specimen a rdfs:Class,
+        rdfs:Resource ;
+    rdfs:subClassOf :Specimen,
+        rdfs:Resource .
+
+:process1 a :Experiment,
+        :Process,
+        rdfs:Resource ;
+    :hasExperimentSetup :processStep1 ;
+    :hasPart :processStep1 ;
+    :hasSample :input1,
+        :sample1 .
+
+:process2 a :Experiment,
+        :Process,
+        rdfs:Resource ;
+    :hasExperimentSetup :processStep2 ;
+    :hasPart :processStep2 ;
+    :hasSample :input2,
+        :sample2 .
+
+:process3 a :Experiment,
+        :Process,
+        rdfs:Resource ;
+    :hasExperimentSetup :processStep3 ;
+    :hasPart :processStep3 ;
+    :hasSample :input3,
+        :sample3 .
+
+:process4 a :Experiment,
+        :Process,
+        rdfs:Resource ;
+    :hasExperimentSetup :processStep4 ;
+    :hasPart :processStep4 ;
+    :hasSample :input4,
+        :sample4 .
+
+:describes a rdf:Property ;
+    rdfs:subPropertyOf :describes .
+
+:hasConcentrations a rdf:Property ;
+    rdfs:subPropertyOf :hasConcentrations .
+
+:hasModifier a rdf:Property ;
+    rdfs:subPropertyOf :hasModifier .
+
+:hasPart a rdf:Property ;
+    rdfs:subPropertyOf :hasPart .
+
+:hasSample a rdf:Property ;
+    rdfs:subPropertyOf :hasSample .
+
+:input1 a :Input,
+        :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :inputSettings1 ;
+    :hasModifier :inputSettings1 ;
+    :isInput :processStep1 ;
+    :is_a :specimen1 .
+
+:input2 a :Input,
+        :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :inputSettings2 ;
+    :hasModifier :inputSettings2 ;
+    :isInput :processStep2 ;
+    :is_a :specimen2 .
+
+:input3 a :Input,
+        :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :inputSettings3 ;
+    :hasModifier :inputSettings3 ;
+    :isInput :processStep3 ;
+    :is_a :specimen3 .
+
+:input4 a :Input,
+        :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :inputSettings4 ;
+    :hasModifier :inputSettings4 ;
+    :isInput :processStep4 ;
+    :is_a :specimen4 .
+
+:isInput a rdf:Property ;
+    rdfs:subPropertyOf :isInput .
+
+:is_a a rdf:Property ;
+    rdfs:subPropertyOf :is_a .
+
+:parameters1 a :Parameters,
+        rdfs:Resource .
+
+:parameters2 a :Parameters,
+        rdfs:Resource .
+
+:parameters3 a :Parameters,
+        rdfs:Resource .
+
+:parameters4 a :Parameters,
+        rdfs:Resource .
+
+:sample1 a :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :parameters1 .
+
+:sample2 a :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :parameters2 .
+
+:sample3 a :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :parameters3 .
+
+:sample4 a :Sample,
+        rdfs:Resource ;
+    :hasConcentrations :parameters4 .
+
+:setup1 a :Setup,
+        rdfs:Resource .
+
+:setup2 a :Setup,
+        rdfs:Resource .
+
+:setup3 a :Setup,
+        rdfs:Resource .
+
+:setup4 a :Setup,
+        rdfs:Resource .
+
+:specimen1 a :Specimen,
+        rdfs:Resource .
+
+:specimen2 a :Specimen,
+        rdfs:Resource .
+
+:specimen3 a :Specimen,
+        rdfs:Resource .
+
+:specimen4 a :Specimen,
+        rdfs:Resource .
+
+rdf:type a rdf:Property ;
+    rdfs:subPropertyOf rdf:type .
+
+rdfs:subClassOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subClassOf .
+
+rdfs:subPropertyOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subPropertyOf .
+
+:inputSettings1 a :InputSettings,
+        :Parameters,
+        rdfs:Resource .
+
+:inputSettings2 a :InputSettings,
+        :Parameters,
+        rdfs:Resource .
+
+:inputSettings3 a :InputSettings,
+        :Parameters,
+        rdfs:Resource .
+
+:inputSettings4 a :InputSettings,
+        :Parameters,
+        rdfs:Resource .
+
+:processStep1 a :ExperimentSetup,
+        :ProcessStep,
+        rdfs:Resource ;
+    :describes :setup1 ;
+    :performedWith :inputSettings1 .
+
+:processStep2 a :ExperimentSetup,
+        :ProcessStep,
+        rdfs:Resource ;
+    :describes :setup2 ;
+    :performedWith :inputSettings2 .
+
+:processStep3 a :ExperimentSetup,
+        :ProcessStep,
+        rdfs:Resource ;
+    :describes :setup3 ;
+    :performedWith :inputSettings3 .
+
+:processStep4 a :ExperimentSetup,
+        :ProcessStep,
+        rdfs:Resource ;
+    :describes :setup4 ;
+    :performedWith :inputSettings4 .
+
+rdfs:Class a rdfs:Resource .
+
