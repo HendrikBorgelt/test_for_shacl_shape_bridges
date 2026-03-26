@@ -1,0 +1,20 @@
+# Shape validation — defines the SOURCE design pattern.
+# Rows describe the expected S-P-O structure that instance data must satisfy
+# before the bridge rule fires. Only data conforming to this pattern will be
+# transformed. The tool uses these rows to (a) generate nested sh:property
+# constraints and (b) populate the SPARQL WHERE clause.
+#
+# Columns:
+#   subject_id          — CURIE of the subject class
+#   predicate_id        — CURIE of the property connecting subject to object
+#   object_id           — CURIE of the object class
+#   comment             — human-readable justification for including this triple
+#
+subject_id,predicate_id,object_id,comment
+ex:Process,ex:isSome,ex:ChemicalInvestigation,A Process is a kind of ChemicalInvestigation — validates the upper-level classification
+ex:Process,ex:hasPart,ex:ProcessStep,A Process contains at least one ProcessStep (structural backbone of the pattern)
+ex:Process,ex:isSome,ex:realizedOccurent,A Process is also a realizedOccurent — upper-level BFO-style constraint
+ex:ProcessStep,ex:describes,ex:Setup,Each ProcessStep describes a physical Setup — links execution to configuration
+ex:Input,ex:isInput,ex:ProcessStep,An Input feeds into a ProcessStep — connects material to process execution
+ex:Input,ex:hasModifier,ex:InputSettings,An Input has associated InputSettings — connects material to its configuration
+ex:Input,ex:is_a,ex:Specimen,An Input is classified as a Specimen — validates material identity

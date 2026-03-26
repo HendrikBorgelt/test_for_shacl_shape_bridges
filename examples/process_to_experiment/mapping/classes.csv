@@ -1,0 +1,13 @@
+id,label,description
+ex:Process,Process,An experimental process consisting of one or more ordered steps
+ex:ProcessStep,ProcessStep,A single step within a Process; may consume Input and modify InputSettings
+ex:Input,Input,A material or data input consumed by a ProcessStep
+ex:InputSettings,InputSettings,Configuration parameters associated with an Input
+ex:ChemicalInvestigation,ChemicalInvestigation,Superclass: any chemical investigation activity
+ex:Setup,Setup,Physical or instrumental setup described by a ProcessStep
+ex:realizedOccurent,realizedOccurent,Upper-level class for occurrents that are realized in time
+ex:Specimen,Specimen,A physical specimen used as input material
+ex:Experiment,Experiment,Target pattern: an experiment as a structured investigation
+ex:ExperimentSetup,ExperimentSetup,Target pattern: the configuration and setup for an Experiment
+ex:Sample,Sample,Target pattern: the sample used in an Experiment
+ex:Parameters,Parameters,Target pattern: the measured or controlled parameters of a Sample

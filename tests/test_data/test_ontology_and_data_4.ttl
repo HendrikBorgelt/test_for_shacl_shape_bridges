@@ -1,0 +1,114 @@
+@prefix : <http://example.org/ontology#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+:Input a rdfs:Class .
+:ProcessStep a rdfs:Class .
+:Setup a rdfs:Class .
+:InputSettings a rdfs:Class .
+:Specimen a rdfs:Class .
+:Process a rdfs:Class .
+:Experiment a rdfs:Class .
+:Sample a rdfs:Class .
+:Parameters a rdfs:Class .
+
+# Individuals
+# Input 1
+:input1 a :Input ;
+    :isInput :processStep1 ;
+    :hasModifier :inputSettings1 ;
+    :is_a :specimen1 .
+
+:processStep1 a :ProcessStep ;
+    :describes :setup1 .
+
+:setup1 a :Setup .
+
+:inputSettings1 a :InputSettings .
+
+:specimen1 a :Specimen .
+
+# Input 2
+:input2 a :Input ;
+    :isInput :processStep2 ;
+    :hasModifier :inputSettings2 ;
+    :is_a :specimen2 .
+
+:processStep2 a :ProcessStep ;
+    :describes :setup2 .
+
+:setup2 a :Setup .
+
+:inputSettings2 a :InputSettings .
+
+:specimen2 a :Specimen .
+
+# Input 3
+:input3 a :Input ;
+    :isInput :processStep3 ;
+    :hasModifier :inputSettings3 ;
+    :is_a :specimen3 .
+
+:processStep3 a :ProcessStep ;
+    :describes :setup3 .
+
+:setup3 a :Setup .
+
+:inputSettings3 a :InputSettings .
+
+:specimen3 a :Specimen .
+
+# Input 4
+:input4 a :Input ;
+    :isInput :processStep4 ;
+    :hasModifier :inputSettings4 ;
+    :is_a :specimen4 .
+
+:processStep4 a :ProcessStep ;
+    :describes :setup4 .
+
+:setup4 a :Setup .
+
+:inputSettings4 a :InputSettings .
+
+:specimen4 a :Specimen .
+
+# Processes and related data
+:process1 a :Process ;
+    :hasPart :processStep1 ;
+    :hasSample :sample1 .
+
+:sample1 a :Sample ;
+    :hasConcentrations :parameters1 .
+
+:parameters1 a :Parameters .
+
+:process2 a :Process ;
+    :hasPart :processStep2 ;
+    :hasSample :sample2 .
+
+:sample2 a :Sample ;
+    :hasConcentrations :parameters2 .
+
+:parameters2 a :Parameters .
+
+:process3 a :Process ;
+    :hasPart :processStep3 ;
+    :hasSample :sample3 .
+
+:sample3 a :Sample ;
+    :hasConcentrations :parameters3 .
+
+:parameters3 a :Parameters .
+
+:process4 a :Process ;
+    :hasPart :processStep4 ;
+    :hasSample :sample4 .
+
+:sample4 a :Sample ;
+    :hasConcentrations :parameters4 .
+
+:parameters4 a :Parameters .

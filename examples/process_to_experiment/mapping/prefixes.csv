@@ -1,0 +1,5 @@
+prefix,namespace,comment
+ex,http://example.org/ontology#,Example ontology namespace used in the worked example
+rdf,http://www.w3.org/1999/02/22-rdf-syntax-ns#,RDF core vocabulary
+rdfs,http://www.w3.org/2000/01/rdf-schema#,RDF Schema vocabulary
+xsd,http://www.w3.org/2001/XMLSchema#,XML Schema datatypes

@@ -1,0 +1,32 @@
+# Shape bridge — defines the TARGET design pattern and the transformation rules.
+#
+# Each row maps a source class (from_id) to a target class (to_id) and optionally
+# declares a new relation (relation_id → target_id) that will be added between
+# target instances.
+#
+# The '-' placeholder in from_id/to_id is forward-filled from the previous row,
+# allowing multiple new relations to be declared for the same class mapping.
+#
+# is_root: marks which source class should be used as sh:targetClass in the SHACL
+#   shape. Only one row should be marked true. If none is marked, the tool selects
+#   automatically via closeness centrality.
+#
+# mapping_justification uses SSSOM-style vocabulary:
+#   semapv:ManualMappingCuration — human expert reviewed and approved this mapping
+#   semapv:StructuralMatching   — mapping follows structural equivalence of graph patterns
+#
+# Columns:
+#   from_id             — CURIE of the source class
+#   to_id               — CURIE of the target class
+#   relation_id         — CURIE of the new relation added in the target pattern (or '-')
+#   target_id           — CURIE of the target of the new relation (or '-')
+#   is_root             — true/false; marks the SHACL shape anchor class
+#   mapping_justification — SSSOM mapping justification CURIE
+#   comment             — human-readable explanation of why this mapping is valid
+#
+from_id,to_id,relation_id,target_id,is_root,mapping_justification,comment
+ex:Process,ex:Experiment,ex:hasExperimentSetup,ex:ExperimentSetup,true,semapv:ManualMappingCuration,"A Process as an investigative activity maps to an Experiment. The hasExperimentSetup relation is the structural equivalent of hasPart in the source pattern."
+ex:Process,ex:Experiment,ex:hasSample,ex:Sample,false,semapv:ManualMappingCuration,"An Experiment also directly references its Sample; this reflects the flattening of the Input→ProcessStep→Process chain."
+ex:ProcessStep,ex:ExperimentSetup,ex:performedWith,ex:Parameters,false,semapv:ManualMappingCuration,"A ProcessStep as a configuration step maps to ExperimentSetup. The performedWith relation connects it to Parameters (equivalent to InputSettings)."
+ex:Input,ex:Sample,ex:hasConcentrations,ex:Parameters,false,semapv:ManualMappingCuration,"An Input as a material specimen maps to Sample. The hasConcentrations relation connects it to Parameters, reflecting the InputSettings role."
+ex:InputSettings,ex:Parameters,-,-,false,semapv:ManualMappingCuration,"InputSettings maps to Parameters. No additional outgoing relation is declared here; Parameters is a terminal node in the target pattern."
