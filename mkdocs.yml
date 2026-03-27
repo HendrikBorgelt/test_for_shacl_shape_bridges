@@ -59,6 +59,7 @@ nav:
   - YAML Format: yaml_format.md
   - Root Selection: root_selection.md
   - Validator: validate.md
+  - Pattern Conversions: patterns.md
   - API Reference: api.md
   - Examples:
       - Process → Experiment: examples/process_experiment.md

@@ -131,23 +131,33 @@ def build_sparql_construct(
     construct_lines: list[str] = []
     seen_construct: set[str] = set()
 
-    # 1. rdf:type assertions: each source instance is also asserted as its target type
+    # 1. rdf:type assertions: each source instance is also asserted as its target type.
+    # Blank-node targets (``_:label``) are skipped — blank nodes have no fixed rdf:type.
     for src, tgt in class_alignment.items():
+        if tgt.startswith("_:"):
+            continue
         src_var = var_map.get(src, f"?{src}")
         line = f"  {src_var} rdf:type {tgt} ."
         if line not in seen_construct:
             construct_lines.append(line)
             seen_construct.add(line)
 
-    # 2. Target-pattern relation triples
+    # 2. Target-pattern relation triples.
     # Resolve target classes back to their source variables via the reverse map.
+    # Blank-node labels (``_:label``) pass through verbatim — SPARQL CONSTRUCT
+    # creates a fresh blank node for each solution row.
     rev_alignment = {tgt: src for src, tgt in class_alignment.items()}
 
+    def _resolve_target_node(node: str) -> str:
+        """Return the SPARQL term for a target-pattern node."""
+        if node.startswith("_:"):
+            return node  # blank node label — kept as-is in CONSTRUCT
+        src = rev_alignment.get(node)
+        return var_map.get(src) if src else f"<{node}>"
+
     for s, p, o in target_triples:
-        s_source = rev_alignment.get(s)
-        o_source = rev_alignment.get(o)
-        s_var = var_map.get(s_source) if s_source else f"<{s}>"
-        o_var = var_map.get(o_source) if o_source else f"<{o}>"
+        s_var = _resolve_target_node(s)
+        o_var = _resolve_target_node(o)
         line = f"  {s_var} {p} {o_var} ."
         if line not in seen_construct:
             construct_lines.append(line)
