@@ -259,13 +259,13 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../csv_format/" class="md-tabs__link">
+      <a href="../../yaml_format/" class="md-tabs__link">
         
   
   
     
   
-  CSV Format
+  YAML Format
 
       </a>
     </li>
@@ -285,6 +285,25 @@
     
   
   Root Selection
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../validate/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Validator
 
       </a>
     </li>
@@ -438,14 +457,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../csv_format/" class="md-nav__link">
+      <a href="../../yaml_format/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CSV Format
+    YAML Format
   
 
     
@@ -473,6 +492,33 @@
     
   
     Root Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validator
   
 
     
@@ -537,10 +583,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
@@ -558,8 +604,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -636,21 +682,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#source-pattern" class="md-nav__link">
+  <a href="#the-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Source pattern
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#target-pattern" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Target pattern
+        The mapping
       
     </span>
   </a>
@@ -669,10 +704,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-files" class="md-nav__link">
+  <a href="#the-mapping-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mapping files
+        The mapping file
       
     </span>
   </a>
@@ -684,6 +719,17 @@
     <span class="md-ellipsis">
       
         What the generated SHACL looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-diff-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the diff output
       
     </span>
   </a>
@@ -733,21 +779,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#source-pattern" class="md-nav__link">
+  <a href="#the-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Source pattern
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#target-pattern" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Target pattern
+        The mapping
       
     </span>
   </a>
@@ -766,10 +801,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-files" class="md-nav__link">
+  <a href="#the-mapping-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mapping files
+        The mapping file
       
     </span>
   </a>
@@ -781,6 +816,17 @@
     <span class="md-ellipsis">
       
         What the generated SHACL looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-diff-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the diff output
       
     </span>
   </a>
@@ -808,85 +854,113 @@
 
 
 <h1 id="example-process-experiment">Example: Process → Experiment<a class="headerlink" href="#example-process-experiment" title="Permanent link">&para;</a></h1>
-<p>This example maps instance data conforming to a <strong>Process/ProcessStep/Input/InputSettings</strong> design pattern to an <strong>Experiment/ExperimentSetup/Sample/Parameters</strong> design pattern.</p>
-<h2 id="source-pattern">Source pattern<a class="headerlink" href="#source-pattern" title="Permanent link">&para;</a></h2>
+<p>This example maps instance data conforming to a
+<strong>Process/ProcessStep/Input/InputSettings</strong> design pattern to an
+<strong>Experiment/ExperimentSetup/Sample/Parameters</strong> design pattern.</p>
+<h2 id="the-mapping">The mapping<a class="headerlink" href="#the-mapping" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    A[Process] --&gt;|hasPart| B[ProcessStep]
-    C[Input] --&gt;|isInput| B
-    C --&gt;|hasModifier| D[InputSettings]
-    A --&gt;|isSome| E([ChemicalInvestigation])
-    A --&gt;|isSome| F([realizedOccurent])
-    B --&gt;|describes| G([Setup])
-    C --&gt;|is_a| H([Specimen])</code></pre>
-<h2 id="target-pattern">Target pattern<a class="headerlink" href="#target-pattern" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TD
-    I(Experiment) --&gt;|hasExperimentSetup| J(ExperimentSetup)
-    I --&gt;|hasSample| K(Sample)
-    J --&gt;|performedWith| L(Parameters)
-    K --&gt;|hasConcentrations| L</code></pre>
+    ex:Process[Process]
+    ex:ProcessStep[ProcessStep]
+    ex:Input[Input]
+    ex:InputSettings[InputSettings]
+    ex:ChemicalInvestigation([ChemicalInvestigation])
+    ex:Setup([Setup])
+    ex:realizedOccurent([realizedOccurent])
+    ex:Specimen([Specimen])
+    ex:Experiment(Experiment)
+    ex:ExperimentSetup(ExperimentSetup)
+    ex:Sample(Sample)
+    ex:Parameters(Parameters)
+
+    subgraph ShapeValidation
+        subgraph CoreShapeInformation
+        ex:Process ==&gt;|hasPart| ex:ProcessStep
+        ex:Input ==&gt;|isInput| ex:ProcessStep
+        ex:Input ==&gt;|hasModifier| ex:InputSettings
+        end
+
+    ex:Process ---&gt;|isSome| ex:ChemicalInvestigation
+    ex:Process ---&gt;|isSome| ex:realizedOccurent
+    ex:ProcessStep ---&gt;|describes| ex:Setup
+    ex:Input ---&gt;|is_a| ex:Specimen
+    end
+
+    subgraph TransformedGraph
+    ex:Experiment --&gt;|hasExperimentSetup| ex:ExperimentSetup
+    ex:Experiment --&gt;|hasSample| ex:Sample
+    ex:ExperimentSetup --&gt;|performedWith| ex:Parameters
+    ex:Sample --&gt;|hasConcentrations| ex:Parameters
+    end
+
+    ex:Process -.....-&gt;|SHACL_bridge| ex:Experiment
+    ex:ProcessStep -.....-&gt;|SHACL_bridge| ex:ExperimentSetup
+    ex:Input -.....-&gt;|SHACL_bridge| ex:Sample
+    ex:InputSettings -.....-&gt;|SHACL_bridge| ex:Parameters</code></pre>
+<p>Node shapes: <strong>rectangle</strong> = core source class (bridged), <strong>stadium</strong> = peripheral source class (validation-only), <strong>rounded rectangle</strong> = target class.</p>
 <h2 id="running-the-example">Running the example<a class="headerlink" href="#running-the-example" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>just<span class="w"> </span>example
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># or directly:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>python<span class="w"> </span>examples/process_to_experiment/run_example.py
 </code></pre></div>
-<p>Expected output:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Loading mapping…
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  Root class: ex:Process
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  Connectivity check passed.
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Generating SHACL shape…
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Written: examples/process_to_experiment/bridge_shape.ttl
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Running bridge…
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Conforms: True
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Written: examples/process_to_experiment/expanded.ttl
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Written: examples/process_to_experiment/diff.ttl
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Generating Mermaid diagram…
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Written: examples/process_to_experiment/diagram.mmd
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>Done. Bridge added N new triples.
-</code></pre></div></p>
-<h2 id="mapping-files">Mapping files<a class="headerlink" href="#mapping-files" title="Permanent link">&para;</a></h2>
-<p>The four CSVs live in <code>examples/process_to_experiment/mapping/</code>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">prefixes.csv</label><label for="__tabbed_1_2">shape_validation.csv</label><label for="__tabbed_1_3">shape_bridge.csv</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>--8&lt;-- &quot;examples/process_to_experiment/mapping/prefixes.csv&quot;
+<p>Or step by step via the CLI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 1. Validate the mapping</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>shacl-bridges<span class="w"> </span>validate<span class="w"> </span>examples/process_to_experiment/mapping/bridge.yaml
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 2. Inspect the generated diagram</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>shacl-bridges<span class="w"> </span>diagram<span class="w"> </span>examples/process_to_experiment/mapping/bridge.yaml
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># 3. Generate the SHACL shape</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>shacl-bridges<span class="w"> </span>generate<span class="w"> </span>examples/process_to_experiment/mapping/bridge.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span>-o<span class="w"> </span>examples/process_to_experiment/bridge_shape.ttl
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># 4. Run the bridge on the test data</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>shacl-bridges<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span>examples/process_to_experiment/mapping/bridge.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span>tests/test_data/data.ttl<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span>--expanded<span class="w"> </span>examples/process_to_experiment/expanded.ttl<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span>--diff<span class="w">     </span>examples/process_to_experiment/diff.ttl
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>--8&lt;-- &quot;examples/process_to_experiment/mapping/shape_validation.csv&quot;
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Data conforms to source pattern.
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Bridge added N new triple(s).
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Written: examples/process_to_experiment/expanded.ttl
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Written: examples/process_to_experiment/diff.ttl
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>--8&lt;-- &quot;examples/process_to_experiment/mapping/shape_bridge.csv&quot;
+<h2 id="the-mapping-file">The mapping file<a class="headerlink" href="#the-mapping-file" title="Permanent link">&para;</a></h2>
+<p>The full mapping lives in <code>examples/process_to_experiment/mapping/bridge.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="l l-Scalar l-Scalar-Plain">--8&lt;-- &quot;examples/process_to_experiment/mapping/bridge.yaml&quot;</span>
 </code></pre></div>
-</div>
-</div>
-</div>
 <h2 id="what-the-generated-shacl-looks-like">What the generated SHACL looks like<a class="headerlink" href="#what-the-generated-shacl-looks-like" title="Permanent link">&para;</a></h2>
-<p>The tool generates a shape targeting <code>ex:Process</code> (the marked root):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">:</span><span class="nt">BridgeShape</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">targetClass</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Process</span> <span class="p">;</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">property</span> <span class="p">[</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">hasPart</span> <span class="p">;</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">node</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">class</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">ProcessStep</span> <span class="p">;</span> <span class="p">...</span> <span class="p">]</span> <span class="p">;</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="p">]</span> <span class="p">;</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">rule</span> <span class="p">[</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">SPARQLRule</span> <span class="p">;</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">construct</span> <span class="s">&quot;&quot;&quot;</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="s">            CONSTRUCT {</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="s">              ?this rdf:type ex:Experiment .</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="s">              ?this ex:hasExperimentSetup ?var_b .</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="s">              ...</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="s">            }</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="s">            WHERE {</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="s">              ?this rdf:type ex:Process .</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="s">              ?this ex:hasPart ?var_b .</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="s">              ...</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="s">            }</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="s">        &quot;&quot;&quot;</span> <span class="p">;</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="p">]</span> <span class="p">;</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="p">.</span>
+<p>The tool generates a shape targeting <code>ex:Process</code> (the declared root):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nn">shapes</span><span class="p">:</span><span class="nt">BridgeShape</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">targetClass</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Process</span> <span class="p">;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">property</span> <span class="p">[</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">hasPart</span> <span class="p">;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">node</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">class</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">ProcessStep</span> <span class="p">;</span> <span class="p">...</span> <span class="p">]</span> <span class="p">;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="p">]</span> <span class="p">;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="nn">sh</span><span class="p">:</span><span class="nt">rule</span> <span class="p">[</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">SPARQLRule</span> <span class="p">;</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="nn">sh</span><span class="p">:</span><span class="nt">construct</span> <span class="s">&quot;&quot;&quot;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s">            CONSTRUCT {</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s">              ?this rdf:type ex:Experiment .</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s">              ?this ex:hasExperimentSetup ?var_b .</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s">              ...</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="s">            }</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="s">            WHERE {</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="s">              ?this rdf:type ex:Process .</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="s">              ?this ex:hasPart ?var_b .</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="s">              ?var_b rdf:type ex:ProcessStep .</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="s">              ...</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="s">            }</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="s">        &quot;&quot;&quot;</span> <span class="p">;</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="p">]</span> <span class="p">;</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">.</span>
 </code></pre></div>
+<h2 id="reading-the-diff-output">Reading the diff output<a class="headerlink" href="#reading-the-diff-output" title="Permanent link">&para;</a></h2>
+<p>The diff graph (<code>diff.ttl</code>) contains only the triples introduced by the bridge —
+nothing that was already in the source graph or derivable from RDFS inference.
+This makes it easy to verify exactly what the bridge produced.</p>
 
 
 

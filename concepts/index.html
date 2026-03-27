@@ -14,7 +14,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../csv_format/">
+        <link rel="next" href="../yaml_format/">
       
       
         
@@ -263,13 +263,13 @@
   
   
     <li class="md-tabs__item">
-      <a href="../csv_format/" class="md-tabs__link">
+      <a href="../yaml_format/" class="md-tabs__link">
         
   
   
     
   
-  CSV Format
+  YAML Format
 
       </a>
     </li>
@@ -289,6 +289,25 @@
     
   
   Root Selection
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../validate/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Validator
 
       </a>
     </li>
@@ -495,6 +514,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-yaml-mapping-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The YAML mapping file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-root-class-and-this" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -506,10 +536,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#inference-step" class="md-nav__link">
+  <a href="#core-vs-peripheral-source-triples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Inference step
+        Core vs peripheral source triples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference-and-syntax-harmonization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inference and syntax harmonization
       
     </span>
   </a>
@@ -542,14 +583,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../csv_format/" class="md-nav__link">
+      <a href="../yaml_format/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CSV Format
+    YAML Format
   
 
     
@@ -577,6 +618,33 @@
     
   
     Root Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validator
   
 
     
@@ -636,10 +704,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -657,8 +725,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -752,6 +820,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-yaml-mapping-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The YAML mapping file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-root-class-and-this" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -763,10 +842,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#inference-step" class="md-nav__link">
+  <a href="#core-vs-peripheral-source-triples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Inference step
+        Core vs peripheral source triples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference-and-syntax-harmonization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inference and syntax harmonization
       
     </span>
   </a>
@@ -806,49 +896,90 @@
 
 <h1 id="concepts">Concepts<a class="headerlink" href="#concepts" title="Permanent link">&para;</a></h1>
 <h2 id="design-patterns-in-ontologies">Design patterns in ontologies<a class="headerlink" href="#design-patterns-in-ontologies" title="Permanent link">&para;</a></h2>
-<p>An ontological <em>design pattern</em> is a recurring, reusable template for modelling a domain concept. For example, a "process with steps" pattern might look like:</p>
+<p>An ontological <em>design pattern</em> is a recurring, reusable template for modelling
+a domain concept. For example, a "process with steps" pattern might look like:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Process --hasPart--&gt; ProcessStep --isInput--&gt; Input --hasModifier--&gt; InputSettings
 </code></pre></div>
-<p>Different communities model the same real-world structure with different patterns. A laboratory workflow ontology might use the above, while a scientific experiment ontology uses:</p>
+<p>Different communities model the same real-world structure with different patterns.
+A laboratory workflow ontology might use the above, while a scientific experiment
+ontology uses:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Experiment --hasExperimentSetup--&gt; ExperimentSetup --performedWith--&gt; Parameters
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Experiment --hasSample--&gt; Sample --hasConcentrations--&gt; Parameters
 </code></pre></div>
-<p>Both encode the same structure — a structured investigation with configuration and material inputs — but the class names, relationship names, and graph topology differ.</p>
+<p>Both encode the same structure — a structured investigation with configuration
+and material inputs — but the class names, relationship names, and graph topology
+differ.</p>
 <h2 id="the-bridging-approach">The bridging approach<a class="headerlink" href="#the-bridging-approach" title="Permanent link">&para;</a></h2>
 <p>SHACL Bridges generates a SHACL shape that:</p>
 <ol>
-<li><strong>Validates</strong> that source instances actually conform to the source design pattern (nested <code>sh:property</code> constraints). Only conforming subgraphs are transformed.</li>
-<li><strong>Transforms</strong> via a <code>sh:SPARQLRule</code> containing a SPARQL <code>CONSTRUCT</code> query. The CONSTRUCT adds new <code>rdf:type</code> assertions and new relations, mapping source instances to target classes.</li>
-<li><strong>Produces a diff</strong> between the pre-rule graph (with RDFS inference only) and the post-rule graph, giving exactly the triples introduced by the bridge.</li>
+<li><strong>Validates</strong> that source instances actually conform to the source design pattern
+   (nested <code>sh:property</code> constraints). Only conforming subgraphs are transformed.</li>
+<li><strong>Transforms</strong> via a <code>sh:SPARQLRule</code> containing a SPARQL <code>CONSTRUCT</code> query.
+   The CONSTRUCT adds new <code>rdf:type</code> assertions and new relations, mapping source
+   instances to target classes.</li>
+<li><strong>Produces a diff</strong> between the pre-rule graph (with RDFS inference only) and
+   the post-rule graph, giving exactly the triples introduced by the bridge.</li>
 </ol>
-<h2 id="the-root-class-and-this">The root class and <code>?this</code><a class="headerlink" href="#the-root-class-and-this" title="Permanent link">&para;</a></h2>
-<p>The SHACL <code>sh:SPARQLRule</code> fires for every instance of <code>sh:targetClass</code>. Inside the rule, <code>?this</code> is automatically bound to each such instance.</p>
-<p>The WHERE clause is <strong>anchored to <code>?this</code></strong> and traverses outward through the source pattern:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">WHERE</span> <span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  <span class="nv">?this</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Process</span> <span class="p">.</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  <span class="nv">?this</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">hasPart</span> <span class="nv">?var_b</span> <span class="p">.</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  <span class="nv">?var_b</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">ProcessStep</span> <span class="p">.</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  <span class="nv">?var_c</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">isInput</span> <span class="nv">?var_b</span> <span class="p">.</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  <span class="p">...</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+<h2 id="the-yaml-mapping-file">The YAML mapping file<a class="headerlink" href="#the-yaml-mapping-file" title="Permanent link">&para;</a></h2>
+<p>A bridge is defined in a single <code>bridge.yaml</code> file with three core sections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>source_pattern  →  what the source data must look like (S-P-O triples)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>target_pattern  →  what to construct (S-P-O triples in the target vocabulary)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>class_map       →  which source class maps to which target class (with justification)
 </code></pre></div>
-<p>This guarantees that <strong>only connected subgraphs</strong> are matched. If the root class is poorly chosen (e.g. a leaf node that has no outgoing edges to other pattern nodes), the WHERE clause becomes disconnected and matches any isolated instance of that class — a silent over-match.</p>
-<p>The tool detects this and raises an error before generating the SHACL shape. See <a href="../root_selection/">Root Selection</a> for details.</p>
-<h2 id="inference-step">Inference step<a class="headerlink" href="#inference-step" title="Permanent link">&para;</a></h2>
-<p>Before running the bridge, it is advisable to harmonize the RDF syntax of your source data using <code>harmonize_to_turtle()</code>. This re-parses and re-serializes the graph, normalizing:</p>
+<p>The source and target patterns are expressed symmetrically — both are just lists
+of triples. The class map is the explicit bridge between them.</p>
+<p>See <a href="../yaml_format/">YAML Format</a> for the full schema.</p>
+<h2 id="the-root-class-and-this">The root class and <code>?this</code><a class="headerlink" href="#the-root-class-and-this" title="Permanent link">&para;</a></h2>
+<p>The SHACL <code>sh:SPARQLRule</code> fires for every instance of <code>sh:targetClass</code>. Inside
+the rule, <code>?this</code> is automatically bound to each such instance.</p>
+<p>The WHERE clause is <strong>anchored to <code>?this</code></strong> and traverses outward through the
+source pattern:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">WHERE</span> <span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  <span class="nv">?this</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Process</span> <span class="p">.</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  <span class="nv">?this</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">hasPart</span> <span class="nv">?var_b</span> <span class="p">.</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  <span class="nv">?var_b</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">ProcessStep</span> <span class="p">.</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  <span class="nv">?var_c</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">isInput</span> <span class="nv">?var_b</span> <span class="p">.</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  <span class="p">...</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>This guarantees that <strong>only connected subgraphs</strong> are matched. If the root class
+is poorly chosen (e.g. a leaf node), the WHERE clause becomes disconnected and
+matches any isolated instance of that class — a silent over-match.</p>
+<p>The tool detects this and raises an error before generating the SHACL shape.
+See <a href="../root_selection/">Root Selection</a> for details.</p>
+<h2 id="core-vs-peripheral-source-triples">Core vs peripheral source triples<a class="headerlink" href="#core-vs-peripheral-source-triples" title="Permanent link">&para;</a></h2>
+<p>Not all source triples should appear in the SPARQL WHERE clause:</p>
+<ul>
+<li><strong>Core triples</strong> have both subject and object as bridged classes (present in
+  <code>class_map</code> as source classes). They appear in both the <code>sh:property</code> constraints
+  and the SPARQL WHERE clause.</li>
+<li><strong>Peripheral triples</strong> have at least one endpoint that is <em>not</em> a bridged class —
+  typically upper-level classification constraints like
+  <code>ex:Process isSome ex:ChemicalInvestigation</code>. These classes exist only at the TBox
+  level. They appear only in the <code>sh:property</code> validation block, not in the WHERE clause.</li>
+</ul>
+<p>The tool distinguishes these automatically based on which classes are in <code>class_map</code>.</p>
+<h2 id="inference-and-syntax-harmonization">Inference and syntax harmonization<a class="headerlink" href="#inference-and-syntax-harmonization" title="Permanent link">&para;</a></h2>
+<p>Before running the bridge, it is advisable to harmonize the RDF syntax of your
+source data using <code>harmonize_to_turtle()</code>. This re-parses and re-serializes the
+graph, normalizing:</p>
 <ul>
 <li>Serialization format (RDF/XML, OWL/XML, N-Triples → Turtle)</li>
 <li>Namespace prefix declarations</li>
 <li>Blank node identifiers</li>
 </ul>
-<p>No semantic inference is applied at this stage. RDFS inference is applied by pyshacl during the validation passes.</p>
+<p>No semantic inference is applied at this stage. RDFS inference is applied by
+pyshacl during the validation passes.</p>
 <h2 id="graph-diff">Graph diff<a class="headerlink" href="#graph-diff" title="Permanent link">&para;</a></h2>
 <p>Two pyshacl <code>Validator</code> runs are performed:</p>
 <ol>
-<li><strong>Base pass</strong>: data graph only, RDFS inference enabled → captures all triples RDFS alone would add.</li>
-<li><strong>Bridge pass</strong>: data graph + SHACL shape, RDFS inference enabled → captures base triples + bridged triples.</li>
+<li><strong>Base pass</strong>: data graph only, RDFS inference enabled → captures all triples
+   RDFS alone would add.</li>
+<li><strong>Bridge pass</strong>: data graph + SHACL shape, RDFS inference enabled → captures
+   base triples + bridged triples.</li>
 </ol>
-<p>The rdflib <code>graph_diff</code> on the two isomorphic representations yields only the triples unique to pass 2 — the bridge output.</p>
+<p>The rdflib <code>graph_diff</code> on the two isomorphic representations yields only the
+triples unique to pass 2 — the bridge output.</p>
 
 
 

@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../yaml_format/">
+        <link rel="prev" href="../concepts/">
       
       
-        <link rel="next" href="../validate/">
+        <link rel="next" href="../root_selection/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Root Selection - SHACL Bridges</title>
+        <title>YAML Format - SHACL Bridges</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#root-class-selection" class="md-skip">
+        <a href="#yaml-format-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Root Selection
+              YAML Format
             
           </span>
         </div>
@@ -259,9 +259,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../yaml_format/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -278,11 +280,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../root_selection/" class="md-tabs__link">
         
   
   
@@ -456,33 +456,6 @@
       
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../yaml_format/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    YAML Format
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -502,7 +475,7 @@
   <span class="md-ellipsis">
     
   
-    Root Selection
+    YAML Format
   
 
     
@@ -520,7 +493,7 @@
   <span class="md-ellipsis">
     
   
-    Root Selection
+    YAML Format
   
 
     
@@ -546,10 +519,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#selection-order" class="md-nav__link">
+  <a href="#top-level-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Selection order
+        Top-level structure
       
     </span>
   </a>
@@ -557,10 +530,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#connectivity-check" class="md-nav__link">
+  <a href="#metadata-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connectivity check
+        metadata (optional)
       
     </span>
   </a>
@@ -568,10 +541,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-automatic-heuristic-works-and-when-it-doesnt" class="md-nav__link">
+  <a href="#prefixes-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the automatic heuristic works (and when it doesn't)
+        prefixes (required)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source_pattern-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_pattern (required)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="source_pattern (required)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-vs-peripheral-triples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core vs peripheral triples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_pattern-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_pattern (required)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class_map-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        class_map (required)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="class_map (required)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapping-justification-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping justification vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
       
     </span>
   </a>
@@ -582,6 +633,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../root_selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Root Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -754,10 +832,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#selection-order" class="md-nav__link">
+  <a href="#top-level-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Selection order
+        Top-level structure
       
     </span>
   </a>
@@ -765,10 +843,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#connectivity-check" class="md-nav__link">
+  <a href="#metadata-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connectivity check
+        metadata (optional)
       
     </span>
   </a>
@@ -776,10 +854,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-automatic-heuristic-works-and-when-it-doesnt" class="md-nav__link">
+  <a href="#prefixes-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the automatic heuristic works (and when it doesn't)
+        prefixes (required)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source_pattern-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_pattern (required)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="source_pattern (required)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-vs-peripheral-triples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core vs peripheral triples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_pattern-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_pattern (required)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class_map-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        class_map (required)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="class_map (required)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapping-justification-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping justification vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
       
     </span>
   </a>
@@ -806,55 +962,189 @@
   
 
 
-<h1 id="root-class-selection">Root Class Selection<a class="headerlink" href="#root-class-selection" title="Permanent link">&para;</a></h1>
-<p>The <em>root class</em> is the class that the generated SHACL <code>sh:NodeShape</code> targets
-(<code>sh:targetClass</code>). It is also the class to which <code>?this</code> is bound in the SPARQL
+<h1 id="yaml-format-reference">YAML Format Reference<a class="headerlink" href="#yaml-format-reference" title="Permanent link">&para;</a></h1>
+<p>A mapping is defined in a single YAML file (conventionally named <code>bridge.yaml</code>).
+Lines beginning with <code>#</code> are treated as YAML comments and ignored.</p>
+<hr />
+<h2 id="top-level-structure">Top-level structure<a class="headerlink" href="#top-level-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">metadata</span><span class="p">:</span><span class="w">       </span><span class="c1"># optional</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">prefixes</span><span class="p">:</span><span class="w">       </span><span class="c1"># required</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">source_pattern</span><span class="p">:</span><span class="w"> </span><span class="c1"># required</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">target_pattern</span><span class="p">:</span><span class="w"> </span><span class="c1"># required</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">class_map</span><span class="p">:</span><span class="w">      </span><span class="c1"># required</span>
+</code></pre></div>
+<hr />
+<h2 id="metadata-optional"><code>metadata</code> (optional)<a class="headerlink" href="#metadata-optional" title="Permanent link">&para;</a></h2>
+<p>Human-readable information about the bridge. None of these fields affect code generation.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td><code>""</code></td>
+<td>Short human-readable name</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>"0.1.0"</code></td>
+<td>Semver string</td>
+</tr>
+<tr>
+<td><code>creator</code></td>
+<td><code>""</code></td>
+<td>Author or organization</td>
+</tr>
+<tr>
+<td><code>license</code></td>
+<td><code>""</code></td>
+<td>License identifier (e.g. <code>CC0</code>)</td>
+</tr>
+<tr>
+<td><code>mapping_justification</code></td>
+<td><code>semapv:ManualMappingCuration</code></td>
+<td>Default SSSOM justification applied to all class_map entries that don't declare their own</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="prefixes-required"><code>prefixes</code> (required)<a class="headerlink" href="#prefixes-required" title="Permanent link">&para;</a></h2>
+<p>A flat mapping of prefix → namespace IRI. All CURIEs used anywhere in the file
+must reference a declared prefix (or a well-known built-in such as <code>rdf</code>, <code>rdfs</code>,
+<code>xsd</code>, <code>owl</code>, <code>sh</code>, <code>skos</code>, <code>semapv</code>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">prefixes</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">ex</span><span class="p">:</span><span class="w">   </span><span class="s">&quot;http://example.org/ontology#&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">prov</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://www.w3.org/ns/prov#&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="source_pattern-required"><code>source_pattern</code> (required)<a class="headerlink" href="#source_pattern-required" title="Permanent link">&para;</a></h2>
+<p>Defines the source design pattern as a list of S-P-O triples.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>triples</code></td>
+<td>yes</td>
+<td>List of <code>[subject, predicate, object]</code> CURIE arrays</td>
+</tr>
+<tr>
+<td><code>root</code></td>
+<td>no</td>
+<td>CURIE of the class to use as <code>sh:targetClass</code> and <code>?this</code>. Omit to auto-compute via closeness centrality.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">source_pattern</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">root</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Process&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">triples</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="c1"># Core structural triples (both nodes are bridged classes)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Process&quot;</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="s">&quot;ex:hasPart&quot;</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="s">&quot;ex:ProcessStep&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Input&quot;</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="s">&quot;ex:isInput&quot;</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="s">&quot;ex:ProcessStep&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="c1"># Peripheral validation triples (upper-level TBox constraints)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Process&quot;</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="s">&quot;ex:isSome&quot;</span><span class="p p-Indicator">,</span><span class="w">      </span><span class="s">&quot;ex:ChemicalInvestigation&quot;</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<h3 id="core-vs-peripheral-triples">Core vs peripheral triples<a class="headerlink" href="#core-vs-peripheral-triples" title="Permanent link">&para;</a></h3>
+<p><strong>Core triples</strong> have both subject and object present in <code>class_map</code> as source
+classes. They drive both the nested <code>sh:property</code> constraints and the SPARQL
 WHERE clause.</p>
-<p>Choosing the wrong root produces a <strong>disconnected WHERE pattern</strong>: the query
-matches any instance of the root class, regardless of whether it is actually
-connected to the other pattern nodes. This causes the bridge to fire on data
-that only superficially resembles the source pattern.</p>
+<p><strong>Peripheral triples</strong> have at least one endpoint that is not a bridged class
+(e.g., an upper-level superclass). They appear only in the <code>sh:property</code>
+validation block — they are TBox-level constraints, not ABox patterns.</p>
 <hr />
-<h2 id="selection-order">Selection order<a class="headerlink" href="#selection-order" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Explicit override</strong> — set <code>root</code> in the <code>source_pattern</code> section of
-   <code>bridge.yaml</code>. This is the recommended approach for production mappings.</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">source_pattern</span><span class="p">:</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">root</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Process&quot;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">triples</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</code></pre></div>
-<ol>
-<li><strong>Automatic selection</strong> — if <code>root</code> is omitted, the tool computes
-   <a href="https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.closeness_centrality.html">closeness centrality</a>
-   on an undirected view of the source-pattern graph, where traversing <em>against</em>
-   an edge has twice the cost of traversing <em>with</em> it. Ties are broken by
-   out-degree in the directed graph. The node with the highest centrality becomes
-   the root.</li>
-</ol>
-<hr />
-<h2 id="connectivity-check">Connectivity check<a class="headerlink" href="#connectivity-check" title="Permanent link">&para;</a></h2>
-<p>After root selection (regardless of method), the tool runs a connectivity check:
-it verifies that every node in the source-pattern graph is reachable from the
-root via any path (directed or undirected).</p>
-<p>If unreachable nodes are found, the tool raises a <code>ValueError</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ValueError: The validation pattern contains nodes not reachable from &#39;ex:Process&#39;:
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[&#39;ex:SomeIsolatedClass&#39;]. Set source_pattern.root to a different class or add the
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>missing relationship to source_pattern.triples.
-</code></pre></div>
-<p>Run <code>shacl-bridges validate</code> first to catch this before running the bridge:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>⚠  &#39;ex:SomeIsolatedClass&#39; is not reachable from root &#39;ex:Process&#39; in source_pattern
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>   hint: This node will be omitted from the SPARQL WHERE clause, causing silent over-matching.
+<h2 id="target_pattern-required"><code>target_pattern</code> (required)<a class="headerlink" href="#target_pattern-required" title="Permanent link">&para;</a></h2>
+<p>Defines the target design pattern as a list of S-P-O triples. These triples
+appear in the SPARQL CONSTRUCT clause.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">target_pattern</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">triples</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Experiment&quot;</span><span class="p p-Indicator">,</span><span class="w">      </span><span class="s">&quot;ex:hasSetup&quot;</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="s">&quot;ex:ExperimentSetup&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Experiment&quot;</span><span class="p p-Indicator">,</span><span class="w">      </span><span class="s">&quot;ex:hasSample&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:Sample&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:ExperimentSetup&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:performedWith&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:Parameters&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <hr />
-<h2 id="why-the-automatic-heuristic-works-and-when-it-doesnt">Why the automatic heuristic works (and when it doesn't)<a class="headerlink" href="#why-the-automatic-heuristic-works-and-when-it-doesnt" title="Permanent link">&para;</a></h2>
-<p>Closeness centrality favours nodes that are "closest" to all other nodes. In a
-chain-shaped pattern (<code>A → B → C → D</code>), this selects the middle nodes (<code>B</code> or
-<code>C</code>). For a hub-and-spoke pattern, it selects the hub.</p>
-<p>The heuristic breaks when:
-- The pattern is disconnected to begin with (caught by the connectivity check)
-- Multiple roots are equally central and out-degree tiebreaking picks the wrong one</p>
-<p>In these cases, set <code>source_pattern.root</code> explicitly.</p>
+<h2 id="class_map-required"><code>class_map</code> (required)<a class="headerlink" href="#class_map-required" title="Permanent link">&para;</a></h2>
+<p>A list of source-class → target-class alignments. Each entry declares:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td>yes</td>
+<td>CURIE of the source class (must appear in <code>source_pattern.triples</code>)</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>yes</td>
+<td>CURIE of the target class (must appear in <code>target_pattern.triples</code>)</td>
+</tr>
+<tr>
+<td><code>justification</code></td>
+<td>no</td>
+<td>SSSOM-style justification CURIE (overrides <code>metadata.mapping_justification</code>)</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>no</td>
+<td>Human-readable explanation of why this mapping is valid</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">class_map</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Process&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Experiment&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">justification</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semapv:ManualMappingCuration&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Process</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">investigative</span><span class="nv"> </span><span class="s">activity</span><span class="nv"> </span><span class="s">maps</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Experiment&quot;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:InputSettings&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Parameters&quot;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Terminal</span><span class="nv"> </span><span class="s">node</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">no</span><span class="nv"> </span><span class="s">outgoing</span><span class="nv"> </span><span class="s">relation</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">pattern&quot;</span>
+</code></pre></div>
+<p>Terminal nodes (source classes with no outgoing structural relations) are handled
+naturally: simply declare them in <code>class_map</code> and omit them from the core
+<code>source_pattern.triples</code>. No <code>-</code> placeholder rows needed.</p>
+<h3 id="mapping-justification-vocabulary">Mapping justification vocabulary<a class="headerlink" href="#mapping-justification-vocabulary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>semapv:ManualMappingCuration</code></td>
+<td>A human expert reviewed and approved this mapping</td>
+</tr>
+<tr>
+<td><code>semapv:StructuralMatching</code></td>
+<td>Mapping follows structural equivalence of graph patterns</td>
+</tr>
+<tr>
+<td><code>semapv:LexicalMatching</code></td>
+<td>Based on lexical similarity of labels</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h2>
+<p>Run <code>shacl-bridges validate my_bridge.yaml</code> to check a file before using it.
+See <a href="../validate/">Validator</a> for the full list of checks.</p>
 
 
 
