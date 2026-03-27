@@ -1,0 +1,34 @@
+metadata:
+  title: "Agentic Entity Split (BFO-aligned)"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  ex:  "http://example.org/split#"
+  obo: "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "ex:AgenticEntity"
+  triples:
+    - ["ex:AgenticEntity", "ex:performsTask", "ex:Task"]
+
+target_pattern:
+  triples:
+    - ["ex:Agent",     "obo:RO_0000087",  "ex:AgentRole"]
+    - ["ex:AgentRole", "ex:performsTask",  "ex:Task"]
+
+class_map:
+  - source: "ex:AgenticEntity"
+    target: "ex:Agent"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Entity side — retains the source instance IRI"
+
+  - source: "ex:AgenticEntity"
+    target: "ex:AgentRole"
+    derived_iri: "suffix:_role"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Role side — IRI minted as {source_iri}_role"
+
+  - source: "ex:Task"
+    target: "ex:Task"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Task is identical in both patterns"

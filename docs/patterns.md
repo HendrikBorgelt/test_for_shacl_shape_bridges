@@ -472,14 +472,168 @@ data, so only the `owl:sameAs` assertion is new.
 
 ---
 
+## Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)
+
+Some source ontologies conflate an entity and its role into a single class —
+a common pattern when modelling agents: one class represents both the
+*independent continuant* (the agent itself) and the *role* it plays.
+BFO / OBI requires these to be separate individuals linked by
+`obo:RO_0000087` (*bearer of*).
+
+The **instance split** transform mints a fresh IRI for the role instance
+at query time using SPARQL's `BIND(IRI(CONCAT(...)))` mechanism.
+The minted IRI is deterministic (suffix appended to the source IRI), so
+running the bridge twice produces no duplicates.
+
+```mermaid
+flowchart LR
+  subgraph Source["Source pattern (conflated)"]
+    AE[AgenticEntity] ==> T[Task]
+  end
+
+  subgraph Target["Target pattern (BFO-aligned)"]
+    AG(Agent) -->|obo:RO_0000087| AR(AgentRole)
+    AR --> T2(Task)
+  end
+
+  AE -.......->|SHACL_bridge| AG
+  AE -..........->|"SHACL_bridge\n(suffix:_role)"| AR
+  T  -.......->|SHACL_bridge| T2
+```
+
+!!! info "IRI minting — `suffix:` form"
+    `derived_iri: "suffix:_role"` appends the literal string `_role` to the
+    source instance IRI.  So `ex:researcherSmith` becomes
+    `ex:researcherSmith_role`.  The generated SPARQL is:
+
+    ```sparql
+    BIND(IRI(CONCAT(STR(?this), "_role")) AS ?derived_AgentRole)
+    ```
+
+    This is evaluated once per matched `?this`, guaranteeing a 1-to-1
+    correspondence between source instances and minted role instances.
+
+### bridge.yaml
+
+```yaml
+metadata:
+  title: "Agentic Entity Split (BFO-aligned)"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  ex:  "http://example.org/pattern5#"
+  obo: "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "ex:AgenticEntity"
+  triples:
+    - ["ex:AgenticEntity", "ex:performsTask", "ex:Task"]
+
+target_pattern:
+  triples:
+    - ["ex:Agent",     "obo:RO_0000087",  "ex:AgentRole"]
+    - ["ex:AgentRole", "ex:performsTask",  "ex:Task"]
+
+class_map:
+  # Regular (non-derived) entry — source instance keeps its IRI, becomes Agent
+  - source: "ex:AgenticEntity"
+    target: "ex:Agent"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Entity side — retains the source instance IRI"
+
+  # Derived entry — a new AgentRole instance is minted as {source_iri}_role
+  - source: "ex:AgenticEntity"
+    target: "ex:AgentRole"
+    derived_iri: "suffix:_role"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Role side — IRI minted as {source_iri}_role"
+
+  - source: "ex:Task"
+    target: "ex:Task"
+    justification: "semapv:ManualMappingCuration"
+```
+
+!!! tip "Two entries, same source"
+    It is valid — and necessary for a split — to have **two `class_map` entries
+    with the same `source`**.  The first (no `derived_iri`) is the *primary*
+    mapping that determines `?this`'s target type.  The second (with
+    `derived_iri`) describes the newly minted sibling instance.
+
+### data.ttl (source instances)
+
+```turtle
+@prefix ex: <http://example.org/pattern5#> .
+
+ex:researcherSmith a ex:AgenticEntity .
+ex:taskA           a ex:Task .
+ex:researcherSmith ex:performsTask ex:taskA .
+
+ex:robotArm1  a ex:AgenticEntity .
+ex:taskB      a ex:Task .
+ex:robotArm1  ex:performsTask ex:taskB .
+```
+
+### Generated SPARQL CONSTRUCT
+
+```sparql
+CONSTRUCT {
+  ?this               rdf:type ex:Agent .
+  ?derived_AgentRole  rdf:type ex:AgentRole .
+  ?var_b              rdf:type ex:Task .
+  ?this               obo:RO_0000087  ?derived_AgentRole .
+  ?derived_AgentRole  ex:performsTask ?var_b .
+}
+WHERE {
+  ?this  rdf:type       ex:AgenticEntity .
+  ?this  ex:performsTask ?var_b .
+  ?var_b rdf:type       ex:Task .
+  BIND(IRI(CONCAT(STR(?this), "_role")) AS ?derived_AgentRole)
+}
+```
+
+### diff.ttl
+
+```turtle
+@prefix ex:  <http://example.org/pattern5#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# --- researcherSmith split ---
+ex:researcherSmith      rdf:type ex:Agent .
+ex:researcherSmith_role rdf:type ex:AgentRole .
+ex:researcherSmith      obo:RO_0000087  ex:researcherSmith_role .
+ex:researcherSmith_role ex:performsTask ex:taskA .
+
+# --- robotArm1 split ---
+ex:robotArm1      rdf:type ex:Agent .
+ex:robotArm1_role rdf:type ex:AgentRole .
+ex:robotArm1      obo:RO_0000087  ex:robotArm1_role .
+ex:robotArm1_role ex:performsTask ex:taskB .
+```
+
+Each source `AgenticEntity` instance produces exactly one minted `AgentRole`
+instance.  The `rdf:type ex:Task` triples are not new (already in the source
+graph), so they do not appear in the diff.
+
+!!! warning "IRI stability"
+    The suffix strategy works well when source IRIs are stable.  If source IRIs
+    are regenerated across runs (e.g. UUIDs assigned at ingest time), consider
+    minting role IRIs from a stable identifier embedded in a data property
+    rather than from the instance IRI itself.
+
+---
+
 ## Combining Patterns
 
-These four building blocks can be composed:
+These five building blocks can be composed:
 
 - A **chain → diamond** followed by a **blank node** insertion on one branch.
 - A **hierarchy rearrangement** that also introduces a **sameAs** convergence at the
   bottom level.
+- An **instance split** whose minted role node also carries a **blank node** mediator
+  to a third class.
 
 In all cases the approach is the same: enumerate the full `source_pattern` and
-`target_pattern` as S-P-O triples, then provide the class alignment in `class_map`.
+`target_pattern` as S-P-O triples, provide the class alignment in `class_map`,
+and add `derived_iri` entries wherever a new instance must be minted.
 The tool handles variable assignment and SPARQL generation automatically.

@@ -14,7 +14,7 @@ Variable naming:
 
 from __future__ import annotations
 
-from shacl_bridges.io.yaml_reader import Triple
+from shacl_bridges.io.yaml_reader import ClassMapEntry, Triple
 
 
 # ---------------------------------------------------------------------------
@@ -58,6 +58,7 @@ def build_sparql_construct(
     target_triples: list[Triple],
     root_class: str,
     prefix_map: dict[str, str],
+    derived_entries: list[ClassMapEntry] | None = None,
 ) -> str:
     """Generate a SPARQL CONSTRUCT query from the bridge mapping.
 
@@ -68,23 +69,30 @@ def build_sparql_construct(
       (e.g. ``ex:Process isSome ex:ChemicalInvestigation``) exist only at the TBox
       level and are omitted from the SPARQL pattern.
     - Every core triple produces type assertions for the non-root nodes.
+    - For each *derived_entry* a ``BIND(IRI(CONCAT(STR(?this), "…")) AS ?derived_X)``
+      line is appended to mint a fresh IRI for the split-off instance.
 
     The CONSTRUCT clause:
     - Asserts new ``rdf:type`` triples for each source → target class mapping
+    - Asserts new ``rdf:type`` triples for each derived entry (instance split)
     - Asserts the target-pattern relation triples, with variables resolved via the
-      reverse of *class_alignment*
+      reverse of *class_alignment* and the derived variable map
 
     Args:
-        class_alignment: ``{source_curie: target_curie}`` from the class map.
+        class_alignment: ``{source_curie: target_curie}`` from the **regular**
+            (non-derived) class-map entries.
         source_triples: All triples from ``source_pattern.triples``.
         target_triples: All triples from ``target_pattern.triples``.
         root_class: CURIE of the root class (the ``sh:targetClass``).
         prefix_map: ``{prefix: namespace}`` dict (used for context; not embedded here).
+        derived_entries: Entries with a ``derived_iri`` field — each describes one
+            instance to be split off from the source and assigned a minted IRI.
 
     Returns:
         SPARQL CONSTRUCT string (without ``PREFIX`` declarations — those are
         emitted separately as ``sh:prefixes`` blocks in the SHACL shape).
     """
+    derived_entries = derived_entries or []
     source_classes = set(class_alignment.keys())
 
     # Collect all source-side entities in a stable order so variable
@@ -107,6 +115,17 @@ def build_sparql_construct(
     var_map[root_class] = "?this"  # root class always binds to ?this
 
     # ------------------------------------------------------------------
+    # Derived-entry variable map
+    # Maps each derived target CURIE to a fresh SPARQL variable name.
+    # Variable name: ?derived_<LocalName> where LocalName is the part
+    # after the last ":" in the CURIE.
+    # ------------------------------------------------------------------
+    derived_var_map: dict[str, str] = {}
+    for entry in derived_entries:
+        local = entry.target.split(":")[-1]
+        derived_var_map[entry.target] = f"?derived_{local}"
+
+    # ------------------------------------------------------------------
     # WHERE clause
     # ------------------------------------------------------------------
     # Only include source triples where BOTH subject and object are source
@@ -125,6 +144,14 @@ def build_sparql_construct(
 
     where_lines = list(dict.fromkeys(where_lines))  # deduplicate preserving order
 
+    # BIND lines for derived (instance-split) entries come after pattern triples.
+    for entry in derived_entries:
+        suffix = entry.derived_iri[len("suffix:"):]   # strip "suffix:" prefix
+        var_name = derived_var_map[entry.target]
+        where_lines.append(
+            f'  BIND(IRI(CONCAT(STR(?this), "{suffix}")) AS {var_name})'
+        )
+
     # ------------------------------------------------------------------
     # CONSTRUCT clause
     # ------------------------------------------------------------------
@@ -142,8 +169,17 @@ def build_sparql_construct(
             construct_lines.append(line)
             seen_construct.add(line)
 
-    # 2. Target-pattern relation triples.
-    # Resolve target classes back to their source variables via the reverse map.
+    # 2. rdf:type assertions for derived (instance-split) targets.
+    for entry in derived_entries:
+        var_name = derived_var_map[entry.target]
+        line = f"  {var_name} rdf:type {entry.target} ."
+        if line not in seen_construct:
+            construct_lines.append(line)
+            seen_construct.add(line)
+
+    # 3. Target-pattern relation triples.
+    # Resolve target classes back to their source variables via the reverse map,
+    # falling back to derived_var_map for split-off nodes.
     # Blank-node labels (``_:label``) pass through verbatim — SPARQL CONSTRUCT
     # creates a fresh blank node for each solution row.
     rev_alignment = {tgt: src for src, tgt in class_alignment.items()}
@@ -152,6 +188,8 @@ def build_sparql_construct(
         """Return the SPARQL term for a target-pattern node."""
         if node.startswith("_:"):
             return node  # blank node label — kept as-is in CONSTRUCT
+        if node in derived_var_map:
+            return derived_var_map[node]  # derived / minted instance
         src = rev_alignment.get(node)
         return var_map.get(src) if src else f"<{node}>"
 

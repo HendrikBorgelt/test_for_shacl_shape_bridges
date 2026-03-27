@@ -147,6 +147,7 @@ def generate_shacl(
         mapping.target_pattern.triples,
         root_class,
         prefix_map,
+        derived_entries=mapping.derived_class_map(),
     )
     # Indent the query body for embedding in Turtle triple-quote string
     indented_query = "\n".join(

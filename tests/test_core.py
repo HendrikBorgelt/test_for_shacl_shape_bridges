@@ -23,6 +23,7 @@ from shacl_bridges.io.yaml_reader import BridgeMapping, Triple, load_mapping
 HERE = Path(__file__).parent
 BRIDGE_YAML = HERE.parent / "examples" / "process_to_experiment" / "mapping" / "bridge.yaml"
 DATA_TTL = HERE / "test_data" / "data.ttl"
+SPLIT_YAML = HERE / "test_data" / "split_bridge.yaml"
 
 
 # ---------------------------------------------------------------------------
@@ -248,6 +249,86 @@ class TestValidator:
         issues = validate_mapping(bad)
         errors = [i for i in issues if i.severity == Severity.ERROR]
         assert any("NonExistent" in i.message for i in errors)
+
+
+# ---------------------------------------------------------------------------
+# Instance split (derived_iri)
+# ---------------------------------------------------------------------------
+
+class TestInstanceSplit:
+    @pytest.fixture()
+    def split_mapping(self) -> BridgeMapping:
+        return load_mapping(SPLIT_YAML)
+
+    def test_loads_derived_entry(self, split_mapping: BridgeMapping):
+        derived = split_mapping.derived_class_map()
+        assert len(derived) == 1
+        assert derived[0].target == "ex:AgentRole"
+        assert derived[0].derived_iri == "suffix:_role"
+
+    def test_class_alignment_excludes_derived(self, split_mapping: BridgeMapping):
+        """class_alignment() must not include the derived entry."""
+        alignment = split_mapping.class_alignment()
+        # Only the regular ex:AgenticEntity → ex:Agent entry should appear
+        assert alignment.get("ex:AgenticEntity") == "ex:Agent"
+        assert "ex:AgentRole" not in alignment.values()
+
+    def test_derived_class_in_target_classes(self, split_mapping: BridgeMapping):
+        """target_classes() must include both regular and derived targets."""
+        tc = split_mapping.target_classes()
+        assert "ex:Agent" in tc
+        assert "ex:AgentRole" in tc
+
+    def test_sparql_contains_bind(self, split_mapping: BridgeMapping):
+        """Generated SPARQL must contain a BIND for the minted IRI."""
+        query = build_sparql_construct(
+            split_mapping.class_alignment(),
+            split_mapping.source_pattern.triples,
+            split_mapping.target_pattern.triples,
+            root_class="ex:AgenticEntity",
+            prefix_map=split_mapping.prefix_map(),
+            derived_entries=split_mapping.derived_class_map(),
+        )
+        assert "BIND" in query
+        assert "_role" in query
+        assert "?derived_AgentRole" in query
+
+    def test_sparql_construct_has_derived_type(self, split_mapping: BridgeMapping):
+        """CONSTRUCT clause must assert rdf:type for the minted instance."""
+        query = build_sparql_construct(
+            split_mapping.class_alignment(),
+            split_mapping.source_pattern.triples,
+            split_mapping.target_pattern.triples,
+            root_class="ex:AgenticEntity",
+            prefix_map=split_mapping.prefix_map(),
+            derived_entries=split_mapping.derived_class_map(),
+        )
+        assert "?derived_AgentRole rdf:type ex:AgentRole" in query
+
+    def test_sparql_construct_has_bearer_relation(self, split_mapping: BridgeMapping):
+        """CONSTRUCT clause must wire the entity to its role via obo:RO_0000087."""
+        query = build_sparql_construct(
+            split_mapping.class_alignment(),
+            split_mapping.source_pattern.triples,
+            split_mapping.target_pattern.triples,
+            root_class="ex:AgenticEntity",
+            prefix_map=split_mapping.prefix_map(),
+            derived_entries=split_mapping.derived_class_map(),
+        )
+        assert "obo:RO_0000087" in query
+
+    def test_invalid_derived_iri_form_raises(self, tmp_path: Path):
+        bad = tmp_path / "bad_split.yaml"
+        bad.write_text(
+            "prefixes:\n  ex: http://example.org/\n"
+            "source_pattern:\n  triples:\n    - [ex:A, ex:p, ex:B]\n"
+            "target_pattern:\n  triples: []\n"
+            "class_map:\n"
+            "  - source: ex:A\n    target: ex:B\n    derived_iri: uuid\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(ValueError, match="derived_iri"):
+            load_mapping(bad)
 
 
 # ---------------------------------------------------------------------------

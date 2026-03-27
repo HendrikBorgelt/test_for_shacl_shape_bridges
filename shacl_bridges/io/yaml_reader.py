@@ -67,7 +67,21 @@ class TargetPattern:
 
 @dataclass
 class ClassMapEntry:
-    """A single source-class → target-class alignment."""
+    """A single source-class → target-class alignment.
+
+    For a standard 1-to-1 mapping leave *derived_iri* as *None*.
+
+    For **instance-split** mappings — where one source instance must become two
+    target instances (e.g. a conflated "Agent+Role" class splitting into a
+    separate ``Agent`` and ``AgentRole``) — add a second entry for the same
+    *source* class with ``derived_iri`` set.  The tool will mint a new IRI for
+    the derived instance at query time.
+
+    Supported ``derived_iri`` forms:
+
+    * ``"suffix:<string>"`` — append *<string>* to the source instance IRI.
+      Example: ``suffix:_role`` turns ``ex:agent1`` into ``ex:agent1_role``.
+    """
 
     source: str
     """CURIE of the source class (must appear in ``source_pattern.triples``)."""
@@ -80,6 +94,10 @@ class ClassMapEntry:
 
     comment: str | None = None
     """Human-readable explanation of why this mapping is valid."""
+
+    derived_iri: str | None = None
+    """IRI minting rule for instance-split targets (see class docstring).
+    When *None* the target instance reuses the source instance IRI (standard case)."""
 
 
 @dataclass
@@ -118,15 +136,32 @@ class BridgeMapping:
         return self.source_pattern.root
 
     def class_alignment(self) -> dict[str, str]:
-        """Return ``{source_curie: target_curie}`` for all class-map entries."""
-        return {e.source: e.target for e in self.class_map}
+        """Return ``{source_curie: target_curie}`` for **regular** (non-derived) entries.
+
+        Entries with a ``derived_iri`` represent *new* instances minted at query
+        time and are intentionally excluded here — they are accessed via
+        :meth:`derived_class_map` and handled separately by the SPARQL builder.
+
+        When the same source class appears in both a regular and a derived entry
+        the regular (non-derived) entry wins and sets the primary ``?this``
+        target type.
+        """
+        result: dict[str, str] = {}
+        for e in self.class_map:
+            if e.derived_iri is None and e.source not in result:
+                result[e.source] = e.target
+        return result
+
+    def derived_class_map(self) -> list[ClassMapEntry]:
+        """Return only the entries that carry a ``derived_iri`` (instance-split targets)."""
+        return [e for e in self.class_map if e.derived_iri is not None]
 
     def source_classes(self) -> set[str]:
         """Return the set of source CURIEs declared in the class map."""
         return {e.source for e in self.class_map}
 
     def target_classes(self) -> set[str]:
-        """Return the set of target CURIEs declared in the class map."""
+        """Return the set of target CURIEs declared in the class map (regular + derived)."""
         return {e.target for e in self.class_map}
 
 
@@ -220,11 +255,20 @@ def load_mapping(path: str | Path) -> BridgeMapping:
             raise ValueError(
                 f"class_map[{i}] must be a mapping, got {type(entry).__name__}"
             )
+        derived_iri_raw = entry.get("derived_iri")
+        if derived_iri_raw is not None:
+            derived_iri_raw = str(derived_iri_raw)
+            if not derived_iri_raw.startswith("suffix:"):
+                raise ValueError(
+                    f"class_map[{i}].derived_iri: unsupported form {derived_iri_raw!r}."
+                    " Currently supported: 'suffix:<string>'"
+                )
         class_map.append(ClassMapEntry(
             source=str(_require(entry, "source", f"class_map[{i}]")),
             target=str(_require(entry, "target", f"class_map[{i}]")),
             justification=entry.get("justification"),
             comment=entry.get("comment"),
+            derived_iri=derived_iri_raw,
         ))
 
     return BridgeMapping(

@@ -102,6 +102,7 @@ A list of source-class → target-class alignments. Each entry declares:
 | `target` | yes | CURIE of the target class (must appear in `target_pattern.triples`) |
 | `justification` | no | SSSOM-style justification CURIE (overrides `metadata.mapping_justification`) |
 | `comment` | no | Human-readable explanation of why this mapping is valid |
+| `derived_iri` | no | IRI minting rule for **instance-split** targets (see below) |
 
 ```yaml
 class_map:
@@ -118,6 +119,53 @@ class_map:
 Terminal nodes (source classes with no outgoing structural relations) are handled
 naturally: simply declare them in `class_map` and omit them from the core
 `source_pattern.triples`. No `-` placeholder rows needed.
+
+---
+
+### Instance splitting with `derived_iri`
+
+When a source class conflates two target-ontology concepts — e.g. an "Agent" that
+bundles both an *independent continuant* and its *role* (as in BFO/OBI) — you need
+one source instance to produce **two** target instances.  Add a second `class_map`
+entry for the same `source` class and set `derived_iri` to instruct the tool how to
+mint the new IRI.
+
+**Supported forms**
+
+| Form | Effect | Example |
+|------|--------|---------|
+| `suffix:<string>` | Append `<string>` to the source instance IRI | `suffix:_role` → `ex:agent1_role` |
+
+The generated SPARQL uses `BIND(IRI(CONCAT(STR(?this), "…")) AS ?derived_X)` in the
+WHERE clause, so a new IRI is computed deterministically for every matched source node.
+Running the bridge twice does **not** create duplicate instances.
+
+```yaml
+class_map:
+  # Regular entry — source instance keeps its IRI, declared as ex:Agent
+  - source: "ex:AgenticEntity"
+    target: "ex:Agent"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Entity side — retains the source instance IRI"
+
+  # Derived entry — a fresh ex:AgentRole instance is minted
+  - source: "ex:AgenticEntity"
+    target: "ex:AgentRole"
+    derived_iri: "suffix:_role"
+    justification: "semapv:ManualMappingCuration"
+    comment: "Role side — IRI minted as {source_iri}_role"
+```
+
+!!! tip
+    It is valid (and necessary) to have **two entries with the same `source`**.
+    The entry *without* `derived_iri` sets the primary `?this` target type;
+    the entry *with* `derived_iri` describes the sibling instance.
+
+See [Pattern 5 — Instance Split](patterns.md#pattern-5-instance-split-conflated-entity-bfo-entity-role)
+for a complete worked example with Mermaid diagram, RDF data, generated SPARQL,
+and diff output.
+
+---
 
 ### Mapping justification vocabulary
 
