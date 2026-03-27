@@ -56,8 +56,9 @@ plugins:
 nav:
   - Home: index.md
   - Concepts: concepts.md
-  - CSV Format: csv_format.md
+  - YAML Format: yaml_format.md
   - Root Selection: root_selection.md
+  - Validator: validate.md
   - API Reference: api.md
   - Examples:
       - Process → Experiment: examples/process_experiment.md

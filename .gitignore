@@ -59,3 +59,4 @@ $RECYCLE.BIN/
 
 # Claude
 .claude
+uv.lock

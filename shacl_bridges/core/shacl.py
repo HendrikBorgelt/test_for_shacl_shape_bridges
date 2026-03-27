@@ -18,7 +18,7 @@ import networkx as nx
 
 from shacl_bridges.core.graph import build_validation_graph
 from shacl_bridges.core.sparql import build_sparql_construct
-from shacl_bridges.io.csv_reader import BridgeMapping
+from shacl_bridges.io.yaml_reader import BridgeMapping
 
 
 # ---------------------------------------------------------------------------
@@ -109,7 +109,7 @@ def generate_shacl(
     """Generate a complete SHACL Turtle document for the given mapping.
 
     Args:
-        mapping: Loaded :class:`~shacl_bridges.io.csv_reader.BridgeMapping`.
+        mapping: Loaded :class:`~shacl_bridges.io.yaml_reader.BridgeMapping`.
         root_class: CURIE of the class that the shape targets (``sh:targetClass``).
         shape_name: Local name for the generated ``sh:NodeShape``.
 
@@ -133,17 +133,18 @@ def generate_shacl(
     prefix_block = "\n".join(prefix_lines)
 
     # ------------------------------------------------------------------
-    # Nested sh:property validation
+    # Nested sh:property validation (full source pattern, including peripheral)
     # ------------------------------------------------------------------
-    G = build_validation_graph(mapping.shape_validation)
+    G = build_validation_graph(mapping.source_pattern.triples)
     nested = _nested_properties(G, root_class)
 
     # ------------------------------------------------------------------
     # SPARQL CONSTRUCT query
     # ------------------------------------------------------------------
     construct_query = build_sparql_construct(
-        mapping.shape_bridge,
-        mapping.shape_validation,
+        mapping.class_alignment(),
+        mapping.source_pattern.triples,
+        mapping.target_pattern.triples,
         root_class,
         prefix_map,
     )

@@ -1,0 +1,85 @@
+# Process → Experiment Bridge
+# ---------------------------------------------------------------------------
+# Maps instance data conforming to the Process/ProcessStep/Input/InputSettings
+# design pattern to the Experiment/ExperimentSetup/Sample/Parameters pattern.
+#
+# Both patterns encode "a structured investigation with configuration and
+# material inputs", but use different class and relation names typical of
+# different ontology communities (laboratory workflow vs. scientific experiment).
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "Process to Experiment Bridge"
+  version: "0.1.0"
+  creator: ""
+  license: "CC0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  ex: "http://example.org/ontology#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+
+source_pattern:
+  # root anchors sh:targetClass and the ?this variable in the SPARQL WHERE clause.
+  # Omit to have the tool compute it automatically via closeness centrality.
+  root: "ex:Process"
+
+  triples:
+    # ── Core structural triples ──────────────────────────────────────────────
+    # Both subject and object are bridged classes (present in class_map).
+    # These drive the SPARQL WHERE clause and the nested sh:property constraints.
+    - ["ex:Process",     "ex:hasPart",     "ex:ProcessStep"]
+    - ["ex:Input",       "ex:isInput",     "ex:ProcessStep"]
+    - ["ex:Input",       "ex:hasModifier", "ex:InputSettings"]
+
+    # ── Peripheral validation triples ────────────────────────────────────────
+    # Upper-level classification constraints that validate the TBox context of
+    # the source pattern. These appear only in sh:property validation blocks,
+    # NOT in the SPARQL WHERE clause (the peripheral classes are not ABox instances).
+    - ["ex:Process",     "ex:isSome",      "ex:ChemicalInvestigation"]
+    - ["ex:Process",     "ex:isSome",      "ex:realizedOccurent"]
+    - ["ex:ProcessStep", "ex:describes",   "ex:Setup"]
+    - ["ex:Input",       "ex:is_a",        "ex:Specimen"]
+
+target_pattern:
+  triples:
+    - ["ex:Experiment",      "ex:hasExperimentSetup", "ex:ExperimentSetup"]
+    - ["ex:Experiment",      "ex:hasSample",          "ex:Sample"]
+    - ["ex:ExperimentSetup", "ex:performedWith",      "ex:Parameters"]
+    - ["ex:Sample",          "ex:hasConcentrations",  "ex:Parameters"]
+
+class_map:
+  - source: "ex:Process"
+    target: "ex:Experiment"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      A Process as an investigative activity maps to an Experiment.
+      The Process/ProcessStep backbone maps to the Experiment/ExperimentSetup
+      structure — both represent a structured workflow with discrete steps.
+
+  - source: "ex:ProcessStep"
+    target: "ex:ExperimentSetup"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      A ProcessStep defines a discrete configuration step that maps to
+      ExperimentSetup. The describes-Setup relation in the source is equivalent
+      to the performedWith-Parameters structure in the target.
+
+  - source: "ex:Input"
+    target: "ex:Sample"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      An Input as a material specimen maps to Sample. The isInput/hasModifier
+      relations are refactored into hasSample/hasConcentrations in the target,
+      reflecting a flatter graph topology.
+
+  - source: "ex:InputSettings"
+    target: "ex:Parameters"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      InputSettings (configuration parameters associated with an Input) maps
+      to Parameters. This is a terminal node in the source pattern — no
+      outgoing structural relation exists, which is handled naturally by its
+      absence from the core source triples.

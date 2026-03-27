@@ -18,9 +18,9 @@
 
 ---
 
-## shacl_bridges.io.csv_reader
+## shacl_bridges.io.yaml_reader
 
-::: shacl_bridges.io.csv_reader
+::: shacl_bridges.io.yaml_reader
 
 ---
 
@@ -51,6 +51,12 @@
 ## shacl_bridges.core.diff
 
 ::: shacl_bridges.core.diff
+
+---
+
+## shacl_bridges.validate
+
+::: shacl_bridges.validate
 
 ---
 

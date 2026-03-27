@@ -2,9 +2,9 @@
 SPARQL CONSTRUCT query generation.
 
 Generates the ``CONSTRUCT { ... } WHERE { ... }`` block that is embedded inside
-a ``sh:SPARQLRule``.  The WHERE clause is always anchored to ``?this`` (the SHACL
+a ``sh:SPARQLRule``. The WHERE clause is always anchored to ``?this`` (the SHACL
 convention for the focused node), which guarantees that only subgraphs that are
-fully connected to the target class are matched.
+fully connected to the root class are matched.
 
 Variable naming:
   - ``?this`` — the focused node (bound to the root class by SHACL)
@@ -14,7 +14,7 @@ Variable naming:
 
 from __future__ import annotations
 
-import pandas as pd
+from shacl_bridges.io.yaml_reader import Triple
 
 
 # ---------------------------------------------------------------------------
@@ -53,89 +53,75 @@ def _generate_variable_names(entities: list[str]) -> dict[str, str]:
 # ---------------------------------------------------------------------------
 
 def build_sparql_construct(
-    shape_bridge: pd.DataFrame,
-    shape_validation: pd.DataFrame,
+    class_alignment: dict[str, str],
+    source_triples: list[Triple],
+    target_triples: list[Triple],
     root_class: str,
     prefix_map: dict[str, str],
 ) -> str:
-    """Generate a SPARQL CONSTRUCT query from bridge and validation tables.
+    """Generate a SPARQL CONSTRUCT query from the bridge mapping.
 
     The WHERE clause:
     - Binds ``?this`` to the *root_class* (``?this rdf:type <root_class>``)
-    - Traverses all relationships from *shape_validation* starting at the root,
-      ensuring a connected pattern
-    - Every entity from *shape_bridge* that also appears in *shape_validation*
-      gets the same variable, so CONSTRUCT can reference it
+    - Includes only *core* source triples — those where both the subject and object
+      are source classes present in *class_alignment*. Peripheral/upper-level triples
+      (e.g. ``ex:Process isSome ex:ChemicalInvestigation``) exist only at the TBox
+      level and are omitted from the SPARQL pattern.
+    - Every core triple produces type assertions for the non-root nodes.
 
     The CONSTRUCT clause:
-    - Asserts new ``rdf:type`` triples mapping source classes to target classes
-    - Asserts new relation triples between target instances
+    - Asserts new ``rdf:type`` triples for each source → target class mapping
+    - Asserts the target-pattern relation triples, with variables resolved via the
+      reverse of *class_alignment*
 
     Args:
-        shape_bridge: DataFrame with columns ``from_id``, ``to_id``,
-                      ``relation_id``, ``target_id``.
-        shape_validation: DataFrame with columns ``subject_id``, ``predicate_id``,
-                          ``object_id``.
+        class_alignment: ``{source_curie: target_curie}`` from the class map.
+        source_triples: All triples from ``source_pattern.triples``.
+        target_triples: All triples from ``target_pattern.triples``.
         root_class: CURIE of the root class (the ``sh:targetClass``).
-        prefix_map: ``{prefix: namespace}`` dict for CURIE resolution.
+        prefix_map: ``{prefix: namespace}`` dict (used for context; not embedded here).
 
     Returns:
         SPARQL CONSTRUCT string (without ``PREFIX`` declarations — those are
         emitted separately as ``sh:prefixes`` blocks in the SHACL shape).
     """
-    # Collect all unique source-side entities in a stable order so variable
-    # assignment is deterministic.
+    source_classes = set(class_alignment.keys())
+
+    # Collect all source-side entities in a stable order so variable
+    # assignment is deterministic. Class-map sources come first so they
+    # always get the lowest-suffix variables.
     all_source_entities: list[str] = []
     seen: set[str] = set()
 
-    # Root first so it always gets ?this (handled specially below)
-    for col in ("from_id",):
-        for val in shape_bridge[col].dropna():
-            if val and val not in seen:
-                all_source_entities.append(val)
-                seen.add(val)
-
-    for col in ("subject_id", "object_id"):
-        for val in shape_validation[col].dropna():
-            if val and val not in seen:
-                all_source_entities.append(val)
-                seen.add(val)
+    for src in class_alignment:
+        if src not in seen:
+            all_source_entities.append(src)
+            seen.add(src)
+    for s, _p, o in source_triples:
+        for v in (s, o):
+            if v not in seen:
+                all_source_entities.append(v)
+                seen.add(v)
 
     var_map = _generate_variable_names(all_source_entities)
-
-    # Override: root class → ?this
-    var_map[root_class] = "?this"
+    var_map[root_class] = "?this"  # root class always binds to ?this
 
     # ------------------------------------------------------------------
     # WHERE clause
     # ------------------------------------------------------------------
-    # Only include shape_validation rows where BOTH subject and object are
-    # source classes being bridged (appear in shape_bridge.from_id).
-    # Upper-level / taxonomic triples (e.g. Process isSome ChemicalInvestigation)
-    # only exist at the TBox level — not in instance data — and belong only in
-    # the nested sh:property constraints, not in the SPARQL WHERE clause.
-    source_classes: set[str] = set(shape_bridge["from_id"].dropna().astype(str))
-    core_sv = shape_validation[
-        shape_validation["subject_id"].isin(source_classes)
-        & shape_validation["object_id"].isin(source_classes)
-    ]
+    # Only include source triples where BOTH subject and object are source
+    # classes in the class_alignment. Upper-level / taxonomic triples are
+    # excluded — they apply only at the TBox level, not in instance data.
+    where_lines: list[str] = [f"  ?this rdf:type {root_class} ."]
 
-    where_lines: list[str] = []
-
-    # Root type assertion (anchors ?this)
-    where_lines.append(f"  ?this rdf:type {root_class} .")
-
-    # Relationship traversal from core shape_validation only
-    for _, row in core_sv.iterrows():
-        subj = row["subject_id"]
-        pred = row["predicate_id"]
-        obj = row["object_id"]
-        subj_var = var_map.get(subj, f"?{subj}")
-        obj_var = var_map.get(obj, f"?{obj}")
-        where_lines.append(f"  {subj_var} {pred} {obj_var} .")
-        if subj != root_class:
-            where_lines.append(f"  {subj_var} rdf:type {subj} .")
-        where_lines.append(f"  {obj_var} rdf:type {obj} .")
+    for s, p, o in source_triples:
+        if s in source_classes and o in source_classes:
+            s_var = var_map.get(s, f"?{s}")
+            o_var = var_map.get(o, f"?{o}")
+            where_lines.append(f"  {s_var} {p} {o_var} .")
+            if s != root_class:
+                where_lines.append(f"  {s_var} rdf:type {s} .")
+            where_lines.append(f"  {o_var} rdf:type {o} .")
 
     where_lines = list(dict.fromkeys(where_lines))  # deduplicate preserving order
 
@@ -143,45 +129,29 @@ def build_sparql_construct(
     # CONSTRUCT clause
     # ------------------------------------------------------------------
     construct_lines: list[str] = []
+    seen_construct: set[str] = set()
 
-    # Build a lookup: from_id → to_id (for variable reuse)
-    from_to: dict[str, str] = {}
-    for _, row in shape_bridge.iterrows():
-        fid = str(row["from_id"])
-        tid = str(row["to_id"])
-        if fid and tid and tid not in ("-", ""):
-            from_to[fid] = tid
-
-    # Type mappings: each source instance also becomes the target type
-    seen_type_lines: set[str] = set()
-    for from_id, to_id in from_to.items():
-        src_var = var_map.get(from_id, f"?{from_id}")
-        line = f"  {src_var} rdf:type {to_id} ."
-        if line not in seen_type_lines:
+    # 1. rdf:type assertions: each source instance is also asserted as its target type
+    for src, tgt in class_alignment.items():
+        src_var = var_map.get(src, f"?{src}")
+        line = f"  {src_var} rdf:type {tgt} ."
+        if line not in seen_construct:
             construct_lines.append(line)
-            seen_type_lines.add(line)
+            seen_construct.add(line)
 
-    # Relation mappings
-    for _, row in shape_bridge.iterrows():
-        from_id = str(row["from_id"])
-        relation = str(row.get("relation_id", ""))
-        target = str(row.get("target_id", ""))
-        if not relation or relation in ("-", "") or not target or target in ("-", ""):
-            continue
-        # The subject of the new relation is the source variable (same instance)
-        src_var = var_map.get(from_id, f"?{from_id}")
-        # The object variable: find the from_id that maps to target_id
-        target_from = next(
-            (fid for fid, tid in from_to.items() if tid == target), None
-        )
-        if target_from is None:
-            # target_id is referenced directly — try var_map
-            tgt_var = var_map.get(target, f"?{target}")
-        else:
-            tgt_var = var_map.get(target_from, f"?{target_from}")
-        line = f"  {src_var} {relation} {tgt_var} ."
-        if line not in construct_lines:
+    # 2. Target-pattern relation triples
+    # Resolve target classes back to their source variables via the reverse map.
+    rev_alignment = {tgt: src for src, tgt in class_alignment.items()}
+
+    for s, p, o in target_triples:
+        s_source = rev_alignment.get(s)
+        o_source = rev_alignment.get(o)
+        s_var = var_map.get(s_source) if s_source else f"<{s}>"
+        o_var = var_map.get(o_source) if o_source else f"<{o}>"
+        line = f"  {s_var} {p} {o_var} ."
+        if line not in seen_construct:
             construct_lines.append(line)
+            seen_construct.add(line)
 
     construct_block = "\n".join(construct_lines)
     where_block = "\n".join(where_lines)
