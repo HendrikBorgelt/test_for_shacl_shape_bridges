@@ -863,6 +863,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pattern-5-instance-split-conflated-entity-bfo-entity-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bridgeyaml_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bridge.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datattl-source-instances_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        data.ttl (source instances)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generated-sparql-construct_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated SPARQL CONSTRUCT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diffttl_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diff.ttl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#combining-patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1251,6 +1312,67 @@
         
           <li class="md-nav__item">
   <a href="#diffttl_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diff.ttl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-instance-split-conflated-entity-bfo-entity-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bridgeyaml_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bridge.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datattl-source-instances_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        data.ttl (source instances)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generated-sparql-construct_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated SPARQL CONSTRUCT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diffttl_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         diff.ttl
@@ -1697,15 +1819,149 @@ You need an OWL reasoner (e.g. <code>owlrl</code>) applied to <code>expanded.ttl
 all entailments. Pass <code>--inference owlrl</code> to <code>shacl-bridges run</code> to enable this.</p>
 </div>
 <hr />
+<h2 id="pattern-5-instance-split-conflated-entity-bfo-entity-role">Pattern 5 — Instance Split (Conflated Entity → BFO Entity + Role)<a class="headerlink" href="#pattern-5-instance-split-conflated-entity-bfo-entity-role" title="Permanent link">&para;</a></h2>
+<p>Some source ontologies conflate an entity and its role into a single class —
+a common pattern when modelling agents: one class represents both the
+<em>independent continuant</em> (the agent itself) and the <em>role</em> it plays.
+BFO / OBI requires these to be separate individuals linked by
+<code>obo:RO_0000087</code> (<em>bearer of</em>).</p>
+<p>The <strong>instance split</strong> transform mints a fresh IRI for the role instance
+at query time using SPARQL's <code>BIND(IRI(CONCAT(...)))</code> mechanism.
+The minted IRI is deterministic (suffix appended to the source IRI), so
+running the bridge twice produces no duplicates.</p>
+<pre class="mermaid"><code>flowchart LR
+  subgraph Source["Source pattern (conflated)"]
+    AE[AgenticEntity] ==&gt; T[Task]
+  end
+
+  subgraph Target["Target pattern (BFO-aligned)"]
+    AG(Agent) --&gt;|obo:RO_0000087| AR(AgentRole)
+    AR --&gt; T2(Task)
+  end
+
+  AE -.......-&gt;|SHACL_bridge| AG
+  AE -..........-&gt;|"SHACL_bridge\n(suffix:_role)"| AR
+  T  -.......-&gt;|SHACL_bridge| T2</code></pre>
+<div class="admonition info">
+<p class="admonition-title">IRI minting — <code>suffix:</code> form</p>
+<p><code>derived_iri: "suffix:_role"</code> appends the literal string <code>_role</code> to the
+source instance IRI.  So <code>ex:researcherSmith</code> becomes
+<code>ex:researcherSmith_role</code>.  The generated SPARQL is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">BIND</span><span class="p">(</span><span class="nf">IRI</span><span class="p">(</span><span class="nf">CONCAT</span><span class="p">(</span><span class="nf">STR</span><span class="p">(</span><span class="nv">?this</span><span class="p">),</span> <span class="s">&quot;_role&quot;</span><span class="p">))</span> <span class="k">AS</span> <span class="nv">?derived_AgentRole</span><span class="p">)</span>
+</code></pre></div>
+<p>This is evaluated once per matched <code>?this</code>, guaranteeing a 1-to-1
+correspondence between source instances and minted role instances.</p>
+</div>
+<h3 id="bridgeyaml_4">bridge.yaml<a class="headerlink" href="#bridgeyaml_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Agentic</span><span class="nv"> </span><span class="s">Entity</span><span class="nv"> </span><span class="s">Split</span><span class="nv"> </span><span class="s">(BFO-aligned)&quot;</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">mapping_justification</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semapv:ManualMappingCuration&quot;</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="nt">prefixes</span><span class="p">:</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span><span class="nt">ex</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;http://example.org/pattern5#&quot;</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">  </span><span class="nt">obo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://purl.obolibrary.org/obo/&quot;</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="nt">source_pattern</span><span class="p">:</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">  </span><span class="nt">root</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:AgenticEntity&quot;</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">  </span><span class="nt">triples</span><span class="p">:</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:AgenticEntity&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:performsTask&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:Task&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="nt">target_pattern</span><span class="p">:</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">  </span><span class="nt">triples</span><span class="p">:</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:Agent&quot;</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="s">&quot;obo:RO_0000087&quot;</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="s">&quot;ex:AgentRole&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ex:AgentRole&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ex:performsTask&quot;</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="s">&quot;ex:Task&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="nt">class_map</span><span class="p">:</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">  </span><span class="c1"># Regular (non-derived) entry — source instance keeps its IRI, becomes Agent</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:AgenticEntity&quot;</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Agent&quot;</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="w">    </span><span class="nt">justification</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semapv:ManualMappingCuration&quot;</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="w">    </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Entity</span><span class="nv"> </span><span class="s">side</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">retains</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">instance</span><span class="nv"> </span><span class="s">IRI&quot;</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="w">  </span><span class="c1"># Derived entry — a new AgentRole instance is minted as {source_iri}_role</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:AgenticEntity&quot;</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:AgentRole&quot;</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="w">    </span><span class="nt">derived_iri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;suffix:_role&quot;</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a><span class="w">    </span><span class="nt">justification</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semapv:ManualMappingCuration&quot;</span>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="w">    </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Role</span><span class="nv"> </span><span class="s">side</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">IRI</span><span class="nv"> </span><span class="s">minted</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">{source_iri}_role&quot;</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Task&quot;</span>
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ex:Task&quot;</span>
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="w">    </span><span class="nt">justification</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semapv:ManualMappingCuration&quot;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Two entries, same source</p>
+<p>It is valid — and necessary for a split — to have <strong>two <code>class_map</code> entries
+with the same <code>source</code></strong>.  The first (no <code>derived_iri</code>) is the <em>primary</em>
+mapping that determines <code>?this</code>'s target type.  The second (with
+<code>derived_iri</code>) describes the newly minted sibling instance.</p>
+</div>
+<h3 id="datattl-source-instances_4">data.ttl (source instances)<a class="headerlink" href="#datattl-source-instances_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">@prefix</span><span class="w"> </span><span class="nn">ex:</span><span class="w"> </span><span class="nv">&lt;http://example.org/pattern5#&gt;</span><span class="w"> </span><span class="p">.</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith</span> <span class="kt">a</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">AgenticEntity</span> <span class="p">.</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">taskA</span>           <span class="kt">a</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Task</span> <span class="p">.</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">taskA</span> <span class="p">.</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1</span>  <span class="kt">a</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">AgenticEntity</span> <span class="p">.</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">taskB</span>      <span class="kt">a</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Task</span> <span class="p">.</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1</span>  <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">taskB</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="generated-sparql-construct_3">Generated SPARQL CONSTRUCT<a class="headerlink" href="#generated-sparql-construct_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">CONSTRUCT</span> <span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>  <span class="nv">?this</span>               <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Agent</span> <span class="p">.</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>  <span class="nv">?derived_AgentRole</span>  <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">AgentRole</span> <span class="p">.</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>  <span class="nv">?var_b</span>              <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Task</span> <span class="p">.</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  <span class="nv">?this</span>               <span class="nn">obo</span><span class="p">:</span><span class="nt">RO_0000087</span>  <span class="nv">?derived_AgentRole</span> <span class="p">.</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>  <span class="nv">?derived_AgentRole</span>  <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nv">?var_b</span> <span class="p">.</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">}</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="k">WHERE</span> <span class="p">{</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>  <span class="nv">?this</span>  <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span>       <span class="nn">ex</span><span class="p">:</span><span class="nt">AgenticEntity</span> <span class="p">.</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>  <span class="nv">?this</span>  <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nv">?var_b</span> <span class="p">.</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>  <span class="nv">?var_b</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span>       <span class="nn">ex</span><span class="p">:</span><span class="nt">Task</span> <span class="p">.</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>  <span class="k">BIND</span><span class="p">(</span><span class="nf">IRI</span><span class="p">(</span><span class="nf">CONCAT</span><span class="p">(</span><span class="nf">STR</span><span class="p">(</span><span class="nv">?this</span><span class="p">),</span> <span class="s">&quot;_role&quot;</span><span class="p">))</span> <span class="k">AS</span> <span class="nv">?derived_AgentRole</span><span class="p">)</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="diffttl_3">diff.ttl<a class="headerlink" href="#diffttl_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">@prefix</span><span class="w"> </span><span class="nn">ex:</span><span class="w">  </span><span class="nv">&lt;http://example.org/pattern5#&gt;</span><span class="w"> </span><span class="p">.</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">@prefix</span><span class="w"> </span><span class="nn">obo:</span><span class="w"> </span><span class="nv">&lt;http://purl.obolibrary.org/obo/&gt;</span><span class="w"> </span><span class="p">.</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">@prefix</span><span class="w"> </span><span class="nn">rdf:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span class="w"> </span><span class="p">.</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c"># --- researcherSmith split ---</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith</span>      <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Agent</span> <span class="p">.</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith_role</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">AgentRole</span> <span class="p">.</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith</span>      <span class="nn">obo</span><span class="p">:</span><span class="nt">RO_0000087</span>  <span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith_role</span> <span class="p">.</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">researcherSmith_role</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">taskA</span> <span class="p">.</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="c"># --- robotArm1 split ---</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1</span>      <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">Agent</span> <span class="p">.</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1_role</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">type</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">AgentRole</span> <span class="p">.</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1</span>      <span class="nn">obo</span><span class="p">:</span><span class="nt">RO_0000087</span>  <span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1_role</span> <span class="p">.</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="nn">ex</span><span class="p">:</span><span class="nt">robotArm1_role</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">performsTask</span> <span class="nn">ex</span><span class="p">:</span><span class="nt">taskB</span> <span class="p">.</span>
+</code></pre></div>
+<p>Each source <code>AgenticEntity</code> instance produces exactly one minted <code>AgentRole</code>
+instance.  The <code>rdf:type ex:Task</code> triples are not new (already in the source
+graph), so they do not appear in the diff.</p>
+<div class="admonition warning">
+<p class="admonition-title">IRI stability</p>
+<p>The suffix strategy works well when source IRIs are stable.  If source IRIs
+are regenerated across runs (e.g. UUIDs assigned at ingest time), consider
+minting role IRIs from a stable identifier embedded in a data property
+rather than from the instance IRI itself.</p>
+</div>
+<hr />
 <h2 id="combining-patterns">Combining Patterns<a class="headerlink" href="#combining-patterns" title="Permanent link">&para;</a></h2>
-<p>These four building blocks can be composed:</p>
+<p>These five building blocks can be composed:</p>
 <ul>
 <li>A <strong>chain → diamond</strong> followed by a <strong>blank node</strong> insertion on one branch.</li>
 <li>A <strong>hierarchy rearrangement</strong> that also introduces a <strong>sameAs</strong> convergence at the
   bottom level.</li>
+<li>An <strong>instance split</strong> whose minted role node also carries a <strong>blank node</strong> mediator
+  to a third class.</li>
 </ul>
 <p>In all cases the approach is the same: enumerate the full <code>source_pattern</code> and
-<code>target_pattern</code> as S-P-O triples, then provide the class alignment in <code>class_map</code>.
+<code>target_pattern</code> as S-P-O triples, provide the class alignment in <code>class_map</code>,
+and add <code>derived_iri</code> entries wherever a new instance must be minted.
 The tool handles variable assignment and SPARQL generation automatically.</p>
 
 
