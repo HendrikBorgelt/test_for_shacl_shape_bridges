@@ -1,0 +1,73 @@
+# Bridge 1b — Agent Splitting (BFO Entity + Role)
+# ---------------------------------------------------------------------------
+# Splits DCAT-AP+ AgenticEntity instances into two NFDICore individuals:
+#   1. An agent (BFO:independent_continuant, bearer of a role) — keeps source IRI
+#   2. A role (BFO:role, realized in a process) — minted IRI with _role suffix
+#
+# IMPORTANT: The root must be prov:Agent (the class being split), because
+# derived_iri uses BIND(IRI(CONCAT(STR(?this), suffix))). The Activity is
+# included as a connected node to provide the process link.
+#
+# Per the Prov-O→BFO paper (Prudhomme 2025, Fig. 3):
+#   prov:Agent ⊂ BFO:material_entity AND (participates_in SOME Activity)
+#                                     AND (bearer_of SOME (role AND has_realization SOME Activity))
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ AgenticEntity Split to NFDICore Agent + Role"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:  "http://www.w3.org/ns/prov#"
+  nfdi:  "https://nfdi.fiz-karlsruhe.de/ontology/"
+  obo:   "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Agent"
+  triples:
+    # ── Core structural triple ───────────────────────────────────────────────
+    # An Activity was associated with this AgenticEntity.
+    # Note: the predicate direction is Activity→Agent (prov:wasAssociatedWith),
+    # but the root is Agent. The tool handles reverse traversal via its
+    # graph connectivity analysis.
+    - ["prov:Activity", "prov:wasAssociatedWith", "prov:Agent"]
+
+target_pattern:
+  triples:
+    # The agent bears a role (RO:0000087 = bearer_of)
+    - ["nfdi:NFDI_0000102", "obo:RO_0000087",  "nfdi:NFDI_0000229"]
+    # The role is realized in the process (BFO:0000054 = realized_in)
+    - ["nfdi:NFDI_0000229", "obo:BFO_0000054",  "nfdi:NFDI_0010029"]
+    # The process has the agent as participant (BFO:0000057 = has_participant)
+    - ["nfdi:NFDI_0010029", "obo:BFO_0000057", "nfdi:NFDI_0000102"]
+
+class_map:
+  # Primary mapping: AgenticEntity → NFDICore agent (keeps source IRI)
+  - source: "prov:Agent"
+    target: "nfdi:NFDI_0000102"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      AgenticEntity (prov:Agent) → NFDICore agent (NFDI_0000102).
+      NFDICore agent is defined as BFO:independent_continuant AND
+      (bearer_of SOME NFDI_0000229). The source instance retains
+      its IRI — it IS the continuant (the spectrometer, the person, etc.).
+
+  # Derived mapping: AgenticEntity → NFDICore role (minted IRI)
+  - source: "prov:Agent"
+    target: "nfdi:NFDI_0000229"
+    derived_iri: "suffix:_role"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      A new NFDI role instance is minted as {agent_iri}_role.
+      NFDI_0000229 is the generic NFDI role (subClassOf BFO:role AND
+      role_of SOME agent).
+
+  - source: "prov:Activity"
+    target: "nfdi:NFDI_0010029"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      The Activity in which the agent participates is typed as a
+      data producing process. Consistent with Bridge 1a.

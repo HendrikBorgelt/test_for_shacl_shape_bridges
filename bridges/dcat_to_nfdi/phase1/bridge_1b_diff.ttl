@@ -1,0 +1,62 @@
+@prefix ns1: <http://purl.obolibrary.org/obo/> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer_role> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/679> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://pubchem.ncbi.nlm.nih.gov/compound/679_role> .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/679_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/71583> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000102> ;
+    ns1:RO_0000087 <https://pubchem.ncbi.nlm.nih.gov/compound/71583_role> .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/71583_role> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000229> ;
+    ns1:BFO_0000054 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0010029> ;
+    ns1:BFO_0000057 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer>,
+        <https://pubchem.ncbi.nlm.nih.gov/compound/71583> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0010029> ;
+    ns1:BFO_0000057 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer>,
+        <https://pubchem.ncbi.nlm.nih.gov/compound/679> .
+

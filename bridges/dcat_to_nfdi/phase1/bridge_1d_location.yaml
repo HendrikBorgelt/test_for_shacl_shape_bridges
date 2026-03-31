@@ -1,0 +1,54 @@
+# Bridge 1d — Location Mapping
+# ---------------------------------------------------------------------------
+# Maps DCAT-AP+ Surrounding (prov:Location) to NFDICore place (BFO:site).
+#
+# Source: prov:Activity --prov:atLocation--> prov:Location
+# Target: process --occurs_in (BFO:0000066)--> place (NFDI_0000005)
+#
+# Per the Prov-O→BFO paper (Prudhomme 2025):
+#   prov:Location ≡ BFO:site (equivalence class mapping)
+# NFDICore place (NFDI_0000005) is a subclass of BFO:site (BFO_0000029).
+#
+# NOTE: The sample test data (AnalysisDataset-001) does not contain
+# Surrounding/Location instances. This bridge needs test data with
+# occurred_in slots populated.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Surrounding to NFDICore Place"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:  "http://www.w3.org/ns/prov#"
+  nfdi:  "https://nfdi.fiz-karlsruhe.de/ontology/"
+  obo:   "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Activity"
+  triples:
+    # Activity occurred at a Location
+    - ["prov:Activity", "prov:atLocation", "prov:Location"]
+
+target_pattern:
+  triples:
+    # Process occurs_in a place (BFO:0000066 = occurs_in)
+    - ["nfdi:NFDI_0010029", "obo:BFO_0000066", "nfdi:NFDI_0000005"]
+
+class_map:
+  - source: "prov:Activity"
+    target: "nfdi:NFDI_0010029"
+    justification: "semapv:ManualMappingCuration"
+    comment: "DataGeneratingActivity → data producing process"
+
+  - source: "prov:Location"
+    target: "nfdi:NFDI_0000005"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      prov:Location → NFDICore place (NFDI_0000005).
+      NFDICore place is a subclass of BFO:site (BFO_0000029).
+      Per the Prov-O→BFO paper, prov:Location ≡ BFO:site.
+      The predicate changes from prov:atLocation to BFO:occurs_in
+      (BFO_0000066), which has domain BFO:process and range BFO:site.

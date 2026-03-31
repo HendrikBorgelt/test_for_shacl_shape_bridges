@@ -1,0 +1,73 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix shapes: <urn:shacl-bridges:shapes#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix nfdi: <https://nfdi.fiz-karlsruhe.de/ontology/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+shapes:BridgeShape
+    a sh:NodeShape ;
+    sh:targetClass dcat:Dataset ;
+        sh:property [
+            sh:path prov:wasGeneratedBy ;
+            sh:node [
+                a sh:NodeShape ;
+                sh:class prov:Activity ;
+                sh:property [
+                    sh:path prov:used ;
+                    sh:node [
+                        a sh:NodeShape ;
+                        sh:class prov:Entity ;
+                    ] ;
+                    sh:message "prov:Activity must have prov:used pointing to a prov:Entity." ;
+                ] ;
+            ] ;
+            sh:message "dcat:Dataset must have prov:wasGeneratedBy pointing to a prov:Activity." ;
+        ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "dcat" ;
+                sh:namespace "http://www.w3.org/ns/dcat#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "prov" ;
+                sh:namespace "http://www.w3.org/ns/prov#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "dcterms" ;
+                sh:namespace "http://purl.org/dc/terms/" ;
+            ] ;
+            sh:declare [
+                sh:prefix "nfdi" ;
+                sh:namespace "https://nfdi.fiz-karlsruhe.de/ontology/" ;
+            ] ;
+            sh:declare [
+                sh:prefix "obo" ;
+                sh:namespace "http://purl.obolibrary.org/obo/" ;
+            ] ;
+        ] ;
+        sh:message "Bridge rule: transforms source design pattern to target." ;
+        sh:construct """
+        CONSTRUCT {
+          ?this rdf:type nfdi:NFDI_0000009 .
+          ?var_b rdf:type nfdi:NFDI_0010029 .
+          ?var_c rdf:type prov:Entity .
+          ?this obo:BFO_0000056 ?var_b .
+          ?var_b obo:BFO_0000057 ?var_c .
+        }
+        WHERE {
+          ?this rdf:type dcat:Dataset .
+          ?this prov:wasGeneratedBy ?var_b .
+          ?var_b rdf:type prov:Activity .
+          ?var_b prov:used ?var_c .
+          ?var_c rdf:type prov:Entity .
+        }
+        """ ;
+    ] ;
+.

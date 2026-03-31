@@ -1,0 +1,6 @@
+prefixes:
+  "doi": "https://doi.org/"
+  "CHEBI": "http://purl.obolibrary.org/obo/CHEBI_"
+  "CHMO": "http://purl.obolibrary.org/obo/CHMO_"
+  "CHEMINF": "http://purl.obolibrary.org/obo/CHEMINF_"
+  "NMR": "http://nmrML.org/nmrCV#NMR:"

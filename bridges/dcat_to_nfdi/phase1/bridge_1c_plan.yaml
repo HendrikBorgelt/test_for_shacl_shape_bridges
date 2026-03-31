@@ -1,0 +1,60 @@
+# Bridge 1c — Plan Mapping
+# ---------------------------------------------------------------------------
+# Maps DCAT-AP+ Plan (prov:Plan) to BFO:generically_dependent_continuant
+# via IAO:information_content_entity.
+#
+# Source: prov:Activity --prov:used--> prov:Plan
+# Target: process --prescribed_by (OBI:0000312)--> IAO:plan_specification
+#
+# Per the Prov-O→BFO paper (Prudhomme 2025):
+#   prov:Plan ⊂ BFO:generically_dependent_continuant
+#   Mapped to CCO Information Content Entity (which is IAO:0000030)
+#   The CSV mapping confirms: Plan → subClassOf iao:information_content_entity
+#
+# NOTE: The sample test data (AnalysisDataset-001) does not contain Plan
+# instances. This bridge needs test data with realized_plan slots populated.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Plan to NFDICore / BFO Information Content Entity"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:  "http://www.w3.org/ns/prov#"
+  nfdi:  "https://nfdi.fiz-karlsruhe.de/ontology/"
+  obo:   "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Activity"
+  triples:
+    # Activity used a Plan (realized_plan slot maps to prov:used with range Plan)
+    - ["prov:Activity", "prov:used", "prov:Plan"]
+
+target_pattern:
+  triples:
+    # Process achieves planned objective specified by a plan specification
+    # Using OBI:0000312 (is_specified_input_of) inverse direction:
+    # plan --is_about (IAO:0000136)--> process
+    # OR more directly: process has_part some plan_specification
+    # For now, we use a simple participates_in relation
+    - ["nfdi:NFDI_0010029", "obo:BFO_0000057", "obo:IAO_0000030"]
+
+class_map:
+  - source: "prov:Activity"
+    target: "nfdi:NFDI_0010029"
+    justification: "semapv:ManualMappingCuration"
+    comment: "DataGeneratingActivity → data producing process"
+
+  - source: "prov:Plan"
+    target: "obo:IAO_0000030"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      prov:Plan → IAO:information_content_entity (IAO_0000030).
+      Per the Prov-O→BFO paper, prov:Plan maps to BFO:GDC, and
+      specifically to CCO Information Content Entity. IAO:0000030
+      is the OBO Foundry equivalent. A more specific subclass
+      (e.g., OBI:plan_specification = OBI:0000260) could be used
+      if the Plan instances are always experimental protocols.

@@ -1,0 +1,9 @@
+@prefix ns1: <http://purl.obolibrary.org/obo/> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0000009> ;
+    ns1:BFO_0000056 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#NMRSpectralAnalysis> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#NMRSpectralAnalysis> a <https://nfdi.fiz-karlsruhe.de/ontology/NFDI_0010029> ;
+    ns1:BFO_0000057 <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrum>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrum> .
+
