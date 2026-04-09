@@ -1,0 +1,56 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix shapes: <urn:shacl-bridges:shapes#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+shapes:BridgeShape
+    a sh:NodeShape ;
+    sh:targetClass prov:Agent ;
+        sh:property [
+            sh:path dcterms:relation ;
+            sh:node [
+                a sh:NodeShape ;
+                sh:class qudt:Quantity ;
+            ] ;
+            sh:message "prov:Agent must have dcterms:relation pointing to a qudt:Quantity." ;
+        ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "prov" ;
+                sh:namespace "http://www.w3.org/ns/prov#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "qudt" ;
+                sh:namespace "http://qudt.org/schema/qudt/" ;
+            ] ;
+            sh:declare [
+                sh:prefix "dcterms" ;
+                sh:namespace "http://purl.org/dc/terms/" ;
+            ] ;
+            sh:declare [
+                sh:prefix "obo" ;
+                sh:namespace "http://purl.obolibrary.org/obo/" ;
+            ] ;
+        ] ;
+        sh:message "Bridge rule: transforms source design pattern to target." ;
+        sh:construct """
+        CONSTRUCT {
+          ?this rdf:type prov:Agent .
+          ?var_b rdf:type obo:IAO_0000027 .
+          ?this dcterms:relation ?var_b .
+        }
+        WHERE {
+          ?this rdf:type prov:Agent .
+          ?this dcterms:relation ?var_b .
+          ?var_b rdf:type qudt:Quantity .
+        }
+        """ ;
+    ] ;
+.

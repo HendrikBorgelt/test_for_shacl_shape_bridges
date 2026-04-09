@@ -198,21 +198,54 @@
     {
       "phase": 2,
       "title": "Attributes Pattern",
-      "status": "todo",
+      "status": "partial — 2a complete, 2b-entity blocked",
       "bridges": [
         {
-          "id": "2a",
-          "title": "Quantitative Attributes",
-          "file": "bridges/dcat_to_nfdi/phase2/bridge_2a_quant_attr.yaml",
-          "description": "qudt:Quantity -> IAO information content entity",
-          "human_review_needed": ["Does QUDT structure need restructuring for NFDICore?"]
+          "id": "2a-entity",
+          "title": "Quantitative Attributes on Entities",
+          "file": "bridges/dcat_to_nfdi/phase2/bridge_2a_quant_entity.yaml",
+          "status": "done — tested",
+          "description": "prov:Entity --dcterms:relation--> qudt:Quantity adds IAO:0000027 typing",
+          "result": "2 qudt:Quantity blank nodes (molar mass) enriched with IAO data item type"
         },
         {
-          "id": "2b",
-          "title": "Qualitative Attributes",
-          "file": "bridges/dcat_to_nfdi/phase2/bridge_2b_qual_attr.yaml",
-          "description": "QualitativeAttribute -> IAO information content entity"
+          "id": "2a-activity",
+          "title": "Quantitative Attributes on Activities",
+          "file": "bridges/dcat_to_nfdi/phase2/bridge_2a_quant_activity.yaml",
+          "status": "done — tested",
+          "description": "prov:Activity --dcterms:relation--> qudt:Quantity adds IAO:0000027 typing",
+          "result": "4 qudt:Quantity blank nodes (temperature, scans) enriched with IAO data item type"
+        },
+        {
+          "id": "2a-agent",
+          "title": "Quantitative Attributes on Agents",
+          "file": "bridges/dcat_to_nfdi/phase2/bridge_2a_quant_agent.yaml",
+          "status": "done — tested",
+          "description": "prov:Agent --dcterms:relation--> qudt:Quantity adds IAO:0000027 typing",
+          "result": "2 qudt:Quantity blank nodes (chemical shift) enriched with IAO data item type"
+        },
+        {
+          "id": "2b-activity",
+          "title": "Qualitative Attributes on Activities",
+          "file": "bridges/dcat_to_nfdi/phase2/bridge_2b_qual_activity.yaml",
+          "status": "done — tested",
+          "description": "prov:Activity --dcterms:relation--> prov:Entity adds IAO:0000027 typing",
+          "result": "2 prov:Entity blank nodes (pulse programme) enriched with IAO data item type"
+        },
+        {
+          "id": "2b-entity",
+          "title": "Qualitative Attributes on Entities",
+          "file": "bridges/dcat_to_nfdi/phase2/bridge_2b_qual_entity.yaml",
+          "status": "BLOCKED — variable collision (ISSUE-T4)",
+          "description": "prov:Entity --dcterms:relation--> prov:Entity: same class_uri on both ends",
+          "blocking_issue": "ISSUE-T4: _generate_variable_names() maps each CURIE to one variable, creating self-referential ?this dcterms:relation ?this"
         }
+      ],
+      "issues_discovered": ["ISSUE-T3 (no type-only bridges)", "ISSUE-T4 (variable collision)"],
+      "human_review_needed": [
+        "Confirm IAO:0000027 (data item) is the right target for both quant and qual attributes",
+        "Should dcterms:relation be mapped to an IAO/BFO predicate (e.g., IAO:0000136 'is about' inverse)?",
+        "3 near-identical bridges for 2a — acceptable or should we fix ISSUE-T3?"
       ]
     },
     {

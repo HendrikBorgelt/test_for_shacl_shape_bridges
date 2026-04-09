@@ -1,0 +1,22 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://qudt.org/schema/qudt/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/679> dcterms:relation [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                ns1:Quantity,
+                rdfs:Resource ;
+            dcterms:description "The chemical shift of the peak used for chemical shift calibration." ;
+            ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
+            ns1:unit <https://qudt.org/vocab/unit/PPM> ;
+            prov:value "39.52"^^xsd:float ] .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/71583> dcterms:relation [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                ns1:Quantity,
+                rdfs:Resource ;
+            dcterms:description "The chemical shift of the peak used for chemical shift calibration." ;
+            ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
+            ns1:unit <https://qudt.org/vocab/unit/PPM> ;
+            prov:value "77.16"^^xsd:float ] .
+

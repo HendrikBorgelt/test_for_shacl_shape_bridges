@@ -1,0 +1,503 @@
+@prefix CHEBI: <http://purl.obolibrary.org/obo/CHEBI_> .
+@prefix CHEMINF: <http://purl.obolibrary.org/obo/CHEMINF_> .
+@prefix CHMO: <http://purl.obolibrary.org/obo/CHMO_> .
+@prefix NMR: <http://nmrML.org/nmrCV#NMR:> .
+@prefix OBI: <http://purl.obolibrary.org/obo/OBI_> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema1: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1> a rdfs:Resource,
+        dcat:Dataset ;
+    dcterms:description "Dataset for 13C nuclear magnetic resonance spectroscopy (13C NMR)" ;
+    dcterms:subject <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2> ;
+    dcterms:title "13C nuclear magnetic resonance spectroscopy (13C NMR)" ;
+    adms:identifier [ a rdfs:Resource,
+                adms:Identifier ;
+            skos:notation "https://www.chemotion-repository.net/pid/50434" ] ;
+    dcat:theme [ a rdfs:Resource,
+                skos:Concept ;
+            skos:prefLabel "TECH" ] ;
+    prov:wasGeneratedBy <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#NMRSpectralAnalysis> .
+
+NMR:1400042 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "NMR data processing" .
+
+CHEBI:23367 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "molecular entity" .
+
+CHEBI:28262 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "dimethyl sulfoxide" .
+
+CHEBI:36928 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "carbon-13 atom" .
+
+CHEBI:59999 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "chemical substance" .
+
+CHEBI:85365 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "deuterated chloroform" .
+
+CHEMINF:000018 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "SMILES descriptor" .
+
+CHEMINF:000042 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "molecular formula" .
+
+CHEMINF:000059 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "InChiKey" .
+
+CHEMINF:000113 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "InChi" .
+
+dcterms:description a rdf:Property ;
+    rdfs:subPropertyOf dcterms:description .
+
+dcterms:hasPart a rdf:Property ;
+    rdfs:subPropertyOf dcterms:hasPart .
+
+dcterms:isPartOf a rdf:Property ;
+    rdfs:subPropertyOf dcterms:isPartOf .
+
+dcterms:relation a rdf:Property ;
+    rdfs:subPropertyOf dcterms:relation .
+
+dcterms:subject a rdf:Property ;
+    rdfs:subPropertyOf dcterms:subject .
+
+dcterms:title a rdf:Property ;
+    rdfs:subPropertyOf dcterms:title .
+
+qudt:hasQuantityKind a rdf:Property ;
+    rdfs:subPropertyOf qudt:hasQuantityKind .
+
+qudt:unit a rdf:Property ;
+    rdfs:subPropertyOf qudt:unit .
+
+schema1:name a rdf:Property ;
+    rdfs:subPropertyOf schema1:name .
+
+rdf:type a rdf:Property ;
+    rdfs:subPropertyOf rdf:type .
+
+rdfs:subPropertyOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subPropertyOf .
+
+skos:Concept a rdfs:Resource .
+
+skos:notation a rdf:Property ;
+    rdfs:subPropertyOf skos:notation .
+
+skos:prefLabel a rdf:Property ;
+    rdfs:subPropertyOf skos:prefLabel .
+
+adms:identifier a rdf:Property ;
+    rdfs:subPropertyOf adms:identifier .
+
+dcat:Dataset a rdfs:Resource .
+
+dcat:theme a rdf:Property ;
+    rdfs:subPropertyOf dcat:theme .
+
+prov:used a rdf:Property ;
+    rdfs:subPropertyOf prov:used .
+
+prov:value a rdf:Property ;
+    rdfs:subPropertyOf prov:value .
+
+prov:wasAssociatedWith a rdf:Property ;
+    rdfs:subPropertyOf prov:wasAssociatedWith .
+
+prov:wasGeneratedBy a rdf:Property ;
+    rdfs:subPropertyOf prov:wasGeneratedBy .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2#EvaluatedCompound> a CHEBI:23367,
+        rdfs:Resource,
+        prov:Entity ;
+    dcterms:description "compound assigned to doi:10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2" ;
+    dcterms:relation [ a CHEMINF:000113,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "assigned InChi" ;
+            prov:value "InChI=1S/C11H12N2S/c1-12-7-10-8-14-11(13-10)9-5-3-2-4-6-9/h2-6,8,12H,7H2,1H3" ],
+        [ a CHEMINF:000107,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:description "Chemotion IUPAC name" ;
+            prov:value "N-methyl-1-(2-phenyl-1,3-thiazol-4-yl)methanamine" ],
+        [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:description "Molar mass as specified in the Chemotion repository." ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MolarMass> ;
+            qudt:unit <https://qudt.org/vocab/unit/GM-PER-MOL> ;
+            prov:value "204.072119"^^xsd:float ],
+        [ a CHEMINF:000107,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:description "PubChem IUPAC name" ;
+            prov:value "Methyl[(2-phenyl-1,3-thiazol-4-yl)methyl]amine" ],
+        [ a CHEMINF:000042,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "assigned molecular formula" ;
+            prov:value "C11H12N2S" ],
+        [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:description "Molar mass as specified in PubChem" ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MolarMass> ;
+            qudt:unit <https://qudt.org/vocab/unit/GM-PER-MOL> ;
+            prov:value "204.29"^^xsd:float ],
+        [ a CHEMINF:000018,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "assigned SMILES" ;
+            prov:value "CNCc1csc(n1)c1ccccc1" ],
+        [ a CHEMINF:000059,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "assigned InChiKey" ;
+            prov:value "KVOIVNBYNQXCNY-BOCHJOTCSA-N" ] ;
+    adms:identifier [ a rdfs:Resource,
+                adms:Identifier ;
+            skos:notation "https://pubchem.ncbi.nlm.nih.gov/compound/26248854" ] .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> a CHMO:0000595,
+        rdfs:Resource,
+        prov:Activity ;
+    dcterms:relation [ a NMR:1400262,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:title "sample temperature setting" ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+            qudt:unit <https://qudt.org/vocab/unit/K> ;
+            prov:value "300.0"^^xsd:float ],
+        [ a NMR:1400087,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:title "Number of scans" ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Count> ;
+            qudt:unit <http://qudt.org/vocab/unit/NUM> ;
+            prov:value "1024.0"^^xsd:float ],
+        [ a NMR:1400037,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "Puls programme" ;
+            prov:value "zgpg30" ] ;
+    dcterms:title "CDCl3_13C_NMR" ;
+    prov:used <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2> ;
+    prov:wasAssociatedWith <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer>,
+        <https://pubchem.ncbi.nlm.nih.gov/compound/71583> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_AcquisitionNucleus> a rdfs:Resource,
+        prov:Agent ;
+    dcterms:isPartOf <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleusAtom> ;
+    dcterms:title "probed nucleus" .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Solvent> a rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "used solvent" ;
+    dcterms:hasPart <https://pubchem.ncbi.nlm.nih.gov/compound/71583> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrometer> a OBI:0000566,
+        rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "The NMR spectrometer used." ;
+    dcterms:title "Bruker 400 MHz" .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrum> a rdfs:Resource,
+        prov:Entity ;
+    prov:wasGeneratedBy <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> a CHMO:0000595,
+        rdfs:Resource,
+        prov:Activity ;
+    dcterms:relation [ a NMR:1400087,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:title "Number of scans" ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Count> ;
+            qudt:unit <http://qudt.org/vocab/unit/NUM> ;
+            prov:value "1024.0"^^xsd:float ],
+        [ a NMR:1400262,
+                qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:title "sample temperature setting" ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+            qudt:unit <https://qudt.org/vocab/unit/K> ;
+            prov:value "300.0"^^xsd:float ],
+        [ a NMR:1400037,
+                rdfs:Resource,
+                prov:Entity ;
+            dcterms:title "Puls programme" ;
+            prov:value "zgpg30" ] ;
+    dcterms:title "DMSO_13C_NMR" ;
+    prov:used <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2> ;
+    prov:wasAssociatedWith <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer>,
+        <https://pubchem.ncbi.nlm.nih.gov/compound/679> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleus> a rdfs:Resource,
+        prov:Agent ;
+    dcterms:isPartOf <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleusAtom> ;
+    dcterms:title "probed nucleus" .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Solvent> a rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "used solvent" ;
+    dcterms:hasPart <https://pubchem.ncbi.nlm.nih.gov/compound/679> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrometer> a OBI:0000566,
+        rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "used spectrometer" ;
+    dcterms:title "Bruker 400 MHz" .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrum> a rdfs:Resource,
+        prov:Entity ;
+    prov:wasGeneratedBy <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#NMRSpectralAnalysis> a NMR:1400042,
+        rdfs:Resource,
+        prov:Activity ;
+    dcterms:description "Analysis of NMR spectra." ;
+    prov:used <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#CDCl3_13C_NMR_Spectrum>,
+        <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_Spectrum> .
+
+"39.52"^^xsd:float a rdfs:Resource .
+
+"77.16"^^xsd:float a rdfs:Resource .
+
+"204.072119"^^xsd:float a rdfs:Resource .
+
+"204.29"^^xsd:float a rdfs:Resource .
+
+"13C" a rdfs:Resource .
+
+"13C nuclear magnetic resonance spectroscopy" a rdfs:Resource .
+
+"13C nuclear magnetic resonance spectroscopy (13C NMR)" a rdfs:Resource .
+
+"Analysis of NMR spectra." a rdfs:Resource .
+
+"C11H12N2S" a rdfs:Resource .
+
+"CDCl3_13C_NMR" a rdfs:Resource .
+
+"CNCc1csc(n1)c1ccccc1" a rdfs:Resource .
+
+"CRS-50440" a rdfs:Resource .
+
+"Chemotion IUPAC name" a rdfs:Resource .
+
+"Chloroform-D" a rdfs:Resource .
+
+"DMSO" a rdfs:Resource .
+
+"DMSO_13C_NMR" a rdfs:Resource .
+
+"Dataset for 13C nuclear magnetic resonance spectroscopy (13C NMR)" a rdfs:Resource .
+
+"IUPAC name" a rdfs:Resource .
+
+"InChI=1S/C11H12N2S/c1-12-7-10-8-14-11(13-10)9-5-3-2-4-6-9/h2-6,8,12H,7H2,1H3" a rdfs:Resource .
+
+"InChi" a rdfs:Resource .
+
+"InChiKey" a rdfs:Resource .
+
+"KVOIVNBYNQXCNY-BOCHJOTCSA-N" a rdfs:Resource .
+
+"Methyl[(2-phenyl-1,3-thiazol-4-yl)methyl]amine" a rdfs:Resource .
+
+"Molar mass as specified in PubChem" a rdfs:Resource .
+
+"Molar mass as specified in the Chemotion repository." a rdfs:Resource .
+
+"N-methyl-1-(2-phenyl-1,3-thiazol-4-yl)methanamine" a rdfs:Resource .
+
+"NMR data processing" a rdfs:Resource .
+
+"NMR instrument" a rdfs:Resource .
+
+"NMR pulse sequence" a rdfs:Resource .
+
+"PubChem IUPAC name" a rdfs:Resource .
+
+"SMILES descriptor" a rdfs:Resource .
+
+"TECH" a rdfs:Resource .
+
+"The NMR spectrometer used." a rdfs:Resource .
+
+"The analysed chemical substance sample CRS-50440." a rdfs:Resource .
+
+"The atom of the probed nucleus" a rdfs:Resource .
+
+"assigned InChi" a rdfs:Resource .
+
+"assigned InChiKey" a rdfs:Resource .
+
+"assigned SMILES" a rdfs:Resource .
+
+"assigned molecular formula" a rdfs:Resource .
+
+"carbon-13 atom" a rdfs:Resource .
+
+"chemical substance" a rdfs:Resource .
+
+"chloroform-D1 (CDCl3)" a rdfs:Resource .
+
+"compound assigned to doi:10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2" a rdfs:Resource .
+
+"deuterated chloroform" a rdfs:Resource .
+
+"dimethyl sulfoxide" a rdfs:Resource .
+
+"https://pubchem.ncbi.nlm.nih.gov/compound/26248854" a rdfs:Resource .
+
+"https://www.chemotion-repository.net/pid/50434" a rdfs:Resource .
+
+"molecular entity" a rdfs:Resource .
+
+"molecular formula" a rdfs:Resource .
+
+"number of scans" a rdfs:Resource .
+
+"sample temperature information" a rdfs:Resource .
+
+"used spectrometer" a rdfs:Resource .
+
+NMR:1400037 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "NMR pulse sequence" .
+
+NMR:1400087 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "number of scans" .
+
+NMR:1400262 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "sample temperature information" .
+
+CHEMINF:000107 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "IUPAC name" .
+
+CHMO:0000595 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "13C nuclear magnetic resonance spectroscopy" .
+
+OBI:0000566 a schema1:DefinedTerm,
+        rdfs:Resource ;
+    schema1:name "NMR instrument" .
+
+<http://qudt.org/vocab/quantitykind/Count> a rdfs:Resource .
+
+<http://qudt.org/vocab/quantitykind/DimensionlessRatio> a rdfs:Resource .
+
+<http://qudt.org/vocab/quantitykind/MolarMass> a rdfs:Resource .
+
+<http://qudt.org/vocab/quantitykind/Temperature> a rdfs:Resource .
+
+<http://qudt.org/vocab/unit/NUM> a rdfs:Resource .
+
+adms:Identifier a rdfs:Resource .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N/CHMO0000595.1#DMSO_13C_NMR_AcquisitionNucleusAtom> a CHEBI:36928,
+        rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "The atom of the probed nucleus" ;
+    dcterms:title "13C" .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/679> a CHEBI:28262,
+        rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "The used calibration compound" ;
+    dcterms:relation [ a qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:description "The chemical shift of the peak used for chemical shift calibration." ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
+            qudt:unit <https://qudt.org/vocab/unit/PPM> ;
+            prov:value "39.52"^^xsd:float ] ;
+    dcterms:title "DMSO" .
+
+<https://pubchem.ncbi.nlm.nih.gov/compound/71583> a CHEBI:85365,
+        rdfs:Resource,
+        prov:Agent ;
+    dcterms:description "The used calibration compound" ;
+    dcterms:relation [ a qudt:Quantity,
+                rdfs:Resource ;
+            dcterms:description "The chemical shift of the peak used for chemical shift calibration." ;
+            qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
+            qudt:unit <https://qudt.org/vocab/unit/PPM> ;
+            prov:value "77.16"^^xsd:float ] ;
+    dcterms:title "Chloroform-D",
+        "chloroform-D1 (CDCl3)" .
+
+<https://qudt.org/vocab/unit/GM-PER-MOL> a rdfs:Resource .
+
+<https://qudt.org/vocab/unit/K> a rdfs:Resource .
+
+<https://qudt.org/vocab/unit/PPM> a rdfs:Resource .
+
+"300.0"^^xsd:float a rdfs:Resource .
+
+"1024.0"^^xsd:float a rdfs:Resource .
+
+"Bruker 400 MHz" a rdfs:Resource .
+
+"Number of scans" a rdfs:Resource .
+
+"Puls programme" a rdfs:Resource .
+
+"The chemical shift of the peak used for chemical shift calibration." a rdfs:Resource .
+
+"The used calibration compound" a rdfs:Resource .
+
+"probed nucleus" a rdfs:Resource .
+
+"sample temperature setting" a rdfs:Resource .
+
+"used solvent" a rdfs:Resource .
+
+"zgpg30" a rdfs:Resource .
+
+prov:Activity a rdfs:Resource .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2> a CHEBI:59999,
+        rdfs:Resource,
+        prov:Entity ;
+    dcterms:description "The analysed chemical substance sample CRS-50440." ;
+    dcterms:hasPart <https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2#EvaluatedCompound> ;
+    dcterms:title "CRS-50440" .
+
+qudt:Quantity a rdfs:Resource .
+
+prov:Agent a rdfs:Resource .
+
+prov:Entity a rdfs:Resource .
+
+schema1:DefinedTerm a rdfs:Resource .
+

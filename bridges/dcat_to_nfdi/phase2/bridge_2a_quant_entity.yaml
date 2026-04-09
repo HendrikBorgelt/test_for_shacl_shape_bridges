@@ -1,0 +1,70 @@
+# Bridge 2a-entity — Quantitative Attributes on Entities
+# ---------------------------------------------------------------------------
+# Adds IAO:0000027 (data item) typing to qudt:Quantity instances that are
+# attached to prov:Entity via dcterms:relation.
+#
+# ISSUE — Tool limitation: "type-only" bridges (no structural triples)
+# are not supported. The validator requires all class_map entries to appear
+# in source_pattern and target_pattern triples. For a simple type-enrichment
+# use case, we must include a structural triple even though the relationship
+# itself (dcterms:relation) is not being transformed.
+#
+# ISSUE — Multiple parent types: qudt:Quantity instances are attached to
+# prov:Entity, prov:Activity, and prov:Agent via dcterms:relation. Each
+# parent type needs its own bridge because the tool requires one root class.
+# This means 3 nearly-identical bridges for quantitative attributes alone.
+# A "type-only" bridge would avoid this duplication entirely.
+#
+# Blank node handling: In DCAT-AP+ data, qudt:Quantity instances are always
+# blank nodes. SPARQL matches them fine, but this means derived_iri (which
+# uses CONCAT(STR(?this),...)) would produce invalid IRIs from blank node
+# strings. Not relevant here since we don't need instance splitting.
+#
+# Source pattern:
+#   prov:Entity --dcterms:relation--> qudt:Quantity
+#
+# Target: The qudt:Quantity blank node gets additional rdf:type IAO:0000027.
+# The dcterms:relation predicate and QUDT structure are preserved.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Quantitative Attribute (Entity) to NFDICore"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:    "http://www.w3.org/ns/prov#"
+  qudt:    "http://qudt.org/schema/qudt/"
+  dcterms: "http://purl.org/dc/terms/"
+  obo:     "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Entity"
+  triples:
+    - ["prov:Entity", "dcterms:relation", "qudt:Quantity"]
+
+target_pattern:
+  triples:
+    # The same relationship is preserved — the only new information is the
+    # rdf:type assertion from the class_map.
+    - ["prov:Entity", "dcterms:relation", "obo:IAO_0000027"]
+
+class_map:
+  - source: "prov:Entity"
+    target: "prov:Entity"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      The parent Entity retains its type. No transformation needed on the
+      parent — only on the attribute.
+
+  - source: "qudt:Quantity"
+    target: "obo:IAO_0000027"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      qudt:Quantity -> IAO:0000027 (data item). Per the DCAT-AP+/NFDICore
+      CSV mapping, QuantitativeAttribute represents a recorded value.
+      IAO data item is appropriate since it records the output of a
+      measurement. The QUDT structure (hasQuantityKind, unit, value)
+      is preserved alongside the new IAO typing.

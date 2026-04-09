@@ -1,0 +1,36 @@
+# Bridge 2a-agent — Quantitative Attributes on Agents
+# ---------------------------------------------------------------------------
+# Same as bridge_2a_quant_entity but rooted on prov:Agent.
+# Matches agents that have qudt:Quantity attributes
+# (e.g., calibration compounds with chemical shift values).
+#
+# See bridge_2a_quant_entity.yaml for full discussion of issues.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Quantitative Attribute (Agent) to NFDICore"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:    "http://www.w3.org/ns/prov#"
+  qudt:    "http://qudt.org/schema/qudt/"
+  dcterms: "http://purl.org/dc/terms/"
+  obo:     "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Agent"
+  triples:
+    - ["prov:Agent", "dcterms:relation", "qudt:Quantity"]
+
+target_pattern:
+  triples:
+    - ["prov:Agent", "dcterms:relation", "obo:IAO_0000027"]
+
+class_map:
+  - source: "prov:Agent"
+    target: "prov:Agent"
+  - source: "qudt:Quantity"
+    target: "obo:IAO_0000027"

@@ -1,0 +1,48 @@
+# Bridge 2b-activity — Qualitative Attributes on Activities
+# ---------------------------------------------------------------------------
+# Adds IAO:0000027 (data item) typing to QualitativeAttribute instances
+# (prov:Entity blank nodes) that are attached to prov:Activity via
+# dcterms:relation.
+#
+# In the sample data, this matches:
+#   - NMR pulse programme descriptions attached to measurement activities
+#
+# Discrimination:
+#   prov:Activity and prov:Entity are different types, so the tool
+#   correctly generates distinct variables for subject and object in the
+#   source triple ["prov:Activity", "dcterms:relation", "prov:Entity"].
+#   No collision occurs.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Qualitative Attribute (Activity) to NFDICore"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:    "http://www.w3.org/ns/prov#"
+  dcterms: "http://purl.org/dc/terms/"
+  obo:     "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Activity"
+  triples:
+    - ["prov:Activity", "dcterms:relation", "prov:Entity"]
+
+target_pattern:
+  triples:
+    - ["prov:Activity", "dcterms:relation", "obo:IAO_0000027"]
+
+class_map:
+  - source: "prov:Activity"
+    target: "prov:Activity"
+  - source: "prov:Entity"
+    target: "obo:IAO_0000027"
+    justification: "semapv:ManualMappingCuration"
+    comment: >
+      QualitativeAttribute (prov:Entity) -> IAO:0000027 (data item).
+      These blank nodes carry textual/categorical values (e.g., pulse
+      programme names) via prov:value. They are information content
+      entities in the IAO sense.

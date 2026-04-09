@@ -1,0 +1,36 @@
+# Bridge 2a-activity — Quantitative Attributes on Activities
+# ---------------------------------------------------------------------------
+# Same as bridge_2a_quant_entity but rooted on prov:Activity.
+# Matches NMR measurement activities that have qudt:Quantity attributes
+# (e.g., sample temperature, number of scans).
+#
+# See bridge_2a_quant_entity.yaml for full discussion of issues.
+# ---------------------------------------------------------------------------
+
+metadata:
+  title: "DCAT-AP+ Quantitative Attribute (Activity) to NFDICore"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  license: "CC-BY-4.0"
+  mapping_justification: "semapv:ManualMappingCuration"
+
+prefixes:
+  prov:    "http://www.w3.org/ns/prov#"
+  qudt:    "http://qudt.org/schema/qudt/"
+  dcterms: "http://purl.org/dc/terms/"
+  obo:     "http://purl.obolibrary.org/obo/"
+
+source_pattern:
+  root: "prov:Activity"
+  triples:
+    - ["prov:Activity", "dcterms:relation", "qudt:Quantity"]
+
+target_pattern:
+  triples:
+    - ["prov:Activity", "dcterms:relation", "obo:IAO_0000027"]
+
+class_map:
+  - source: "prov:Activity"
+    target: "prov:Activity"
+  - source: "qudt:Quantity"
+    target: "obo:IAO_0000027"

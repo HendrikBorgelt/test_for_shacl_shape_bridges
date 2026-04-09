@@ -1,0 +1,68 @@
+# Bridge 2b-entity — Qualitative Attributes on Entities
+# ---------------------------------------------------------------------------
+# *** NOT IMPLEMENTABLE WITH CURRENT TOOL ***
+#
+# ISSUE — Variable collision (same-type endpoints):
+#
+# QualitativeAttribute has class_uri prov:Entity, identical to its parent
+# EvaluatedEntity. The source triple would be:
+#
+#   ["prov:Entity", "dcterms:relation", "prov:Entity"]
+#
+# The SPARQL generator (sparql.py:_generate_variable_names) assigns ONE
+# variable per unique class CURIE. This means both subject and object map
+# to the same ?var, producing:
+#
+#   ?this dcterms:relation ?this .
+#
+# This self-referential pattern never matches real data.
+#
+# Affected data in sample_data.ttl:
+#   EvaluatedCompound (prov:Entity) --dcterms:relation--> 6 blank nodes
+#   that are each typed prov:Entity (+ a CHEMINF type):
+#     - 2x IUPAC names (CHEMINF:000107)
+#     - 1x molecular formula (CHEMINF:000042)
+#     - 1x SMILES (CHEMINF:000018)
+#     - 1x InChiKey (CHEMINF:000059)
+#     - 1x InChi (CHEMINF:000113)
+#
+# FEASIBLE FIXES:
+#
+# 1. Tool fix — Allow same class on both sides with indexed variables:
+#    When the same CURIE appears as both subject and object of a triple,
+#    generate ?var_entity_0 and ?var_entity_1 (or similar). The class_map
+#    would need a way to specify which "instance" of the class maps to
+#    which target.
+#
+# 2. Tool fix — Allow `filter: true` triples (discussed for Bridge 1b):
+#    Root on prov:Entity (the qualitative attribute itself), then use a
+#    filter triple to ensure it's the object of a dcterms:relation:
+#      triples:
+#        - triple: ["???", "dcterms:relation", "prov:Entity"]
+#          filter: true
+#    But this still needs a type for "???" — the parent — which is also
+#    prov:Entity. Circular problem unless the parent can be left untyped.
+#
+# 3. Schema fix — Give QualitativeAttribute a distinct class_uri:
+#    If DCAT-AP+ assigned a unique URI (e.g., dcatap:QualitativeAttribute)
+#    instead of reusing prov:Entity, the variable collision disappears.
+#    This is a schema design consideration, not a bridge fix.
+#
+# 4. Workaround — Use the ClassifierMixin secondary type:
+#    In the data, qualitative attributes always carry a secondary rdf:type
+#    from CHEMINF or NMR. A bridge could root on CHEMINF:000107 or
+#    similar, but this requires per-classifier-type bridges (impractical
+#    for a general solution).
+#
+# For now, this bridge is documented but NOT functional.
+# The Activity-rooted variant (bridge_2b_qual_activity.yaml) works because
+# prov:Activity ≠ prov:Entity — no variable collision.
+# ---------------------------------------------------------------------------
+
+# Placeholder — cannot be validated or run
+metadata:
+  title: "DCAT-AP+ Qualitative Attribute (Entity) — BLOCKED"
+  version: "0.1.0"
+  creator: "SHACL Bridges / DCAT-AP+ to NFDICore mapping project"
+  status: "blocked"
+  blocking_issue: "Variable collision: same class_uri (prov:Entity) on both sides of source triple"

@@ -1,0 +1,21 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://qudt.org/schema/qudt/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://doi.org/10.14272/UGRXAOUDHZOHPF-UHFFFAOYSA-N.2#EvaluatedCompound> dcterms:relation [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                ns1:Quantity,
+                rdfs:Resource ;
+            dcterms:description "Molar mass as specified in PubChem" ;
+            ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MolarMass> ;
+            ns1:unit <https://qudt.org/vocab/unit/GM-PER-MOL> ;
+            prov:value "204.29"^^xsd:float ],
+        [ a <http://purl.obolibrary.org/obo/IAO_0000027>,
+                ns1:Quantity,
+                rdfs:Resource ;
+            dcterms:description "Molar mass as specified in the Chemotion repository." ;
+            ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MolarMass> ;
+            ns1:unit <https://qudt.org/vocab/unit/GM-PER-MOL> ;
+            prov:value "204.072119"^^xsd:float ] .
+

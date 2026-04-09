@@ -1,0 +1,47 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix shapes: <urn:shacl-bridges:shapes#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix nfdi: <https://nfdi.fiz-karlsruhe.de/ontology/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+shapes:BridgeShape
+    a sh:NodeShape ;
+    sh:targetClass prov:Agent ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "prov" ;
+                sh:namespace "http://www.w3.org/ns/prov#" ;
+            ] ;
+            sh:declare [
+                sh:prefix "nfdi" ;
+                sh:namespace "https://nfdi.fiz-karlsruhe.de/ontology/" ;
+            ] ;
+            sh:declare [
+                sh:prefix "obo" ;
+                sh:namespace "http://purl.obolibrary.org/obo/" ;
+            ] ;
+        ] ;
+        sh:message "Bridge rule: transforms source design pattern to target." ;
+        sh:construct """
+        CONSTRUCT {
+          ?this rdf:type nfdi:NFDI_0000102 .
+          ?var_b rdf:type nfdi:NFDI_0010029 .
+          ?derived_NFDI_0000229 rdf:type nfdi:NFDI_0000229 .
+          ?this obo:RO_0000087 ?derived_NFDI_0000229 .
+          ?derived_NFDI_0000229 obo:BFO_0000054 ?var_b .
+          ?var_b obo:BFO_0000057 ?this .
+        }
+        WHERE {
+          ?this rdf:type prov:Agent .
+          ?var_b prov:wasAssociatedWith ?this .
+          ?var_b rdf:type prov:Activity .
+          BIND(IRI(CONCAT(STR(?this), "_role")) AS ?derived_NFDI_0000229)
+        }
+        """ ;
+    ] ;
+.
