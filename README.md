@@ -1,3 +1,5 @@
+github pages: https://hendrikborgelt.github.io/test_for_shacl_shape_bridges/
+
 # SHACL Bridges
 
 **N-to-m semantic mapping via SHACL shapes with SPARQL CONSTRUCT rules.**
